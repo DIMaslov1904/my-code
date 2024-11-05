@@ -1,0 +1,19 @@
+.main {
+  display: grid;
+  gap: 32px;
+}
+
+.section {
+  display: grid;
+  gap: 18px;
+  border-radius: 10px;
+  background-color: #eee;
+  padding: 10px;
+}
+
+.code {
+  border-radius: 10px;
+  background-color: #222;
+  color: aliceblue;
+  padding: 25px 50px;
+}

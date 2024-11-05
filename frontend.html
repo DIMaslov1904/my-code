@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Инструкция</title>
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+  <body>
+    <main class="main">
+      <section class="section">
+        <h2>HTML</h2>
+      </section>
+
+      <section class="section">
+        <h2>CSS</h2>
+      </section>
+
+      <section class="section">
+        <h2>JS</h2>
+        <div>
+          <h3>Отложенное подключение скрипта</h3>
+
+          <p>
+            Подключение происходит по целевому действию пользователя или через 5
+            секунд полсе загрузки страницы
+          </p>
+
+          <pre class="code">
+&lt;script type="text/javascript">
+(function () {
+  "use strict";
+  let connectedScript = false, timerId;
+
+  function loadFallback() {timerId = setTimeout(connectScript, 5000)}
+
+  function connectScript() {
+    if (connectedScript) return;
+
+    // Выполняемая функция
+
+    connectedScript = true;
+    clearTimeout(timerId);
+    window.removeEventListener("scroll", connectScript);
+    window.removeEventListener("touchstart", connectScript);
+    document.removeEventListener("mouseenter", connectScript);
+    document.removeEventListener("click", connectScript);
+    window.removeEventListener("load", loadFallback);
+  }
+
+  window.addEventListener("scroll", connectScript, { passive: true });
+  window.addEventListener("touchstart", connectScript);
+  document.addEventListener("mouseenter", connectScript);
+  document.addEventListener("click", connectScript);
+  window.addEventListener("load", loadFallback);
+})()
+&lt;/script>
+          </pre>
+        </div>
+
+        <div>
+          <h3>Копирование в буфер обмена</h3>
+
+          <pre class="code">
+navigator.clipboard.writeText("текст для копирования")
+  .then(() => console.log("Скопировано!"))
+  .catch(() => console.log("Скопировать не удалось"));
+          </pre>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
