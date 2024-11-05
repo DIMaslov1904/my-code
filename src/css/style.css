@@ -1,3 +1,18 @@
+.btn {
+  border: 0;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: rgb(185, 72, 255);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
 .main {
   display: grid;
   gap: 32px;

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Инструкция</title>
     <link rel="stylesheet" href="/src/css/style.css" />
+    <script src="/src/js/script.js"></script>
   </head>
   <body>
     <main class="main">
@@ -26,6 +27,8 @@
             секунд полсе загрузки страницы
           </p>
 
+
+          <button class="btn btn__copy">Скопировать код</button>
           <pre class="code">
 &lt;script type="text/javascript">
 (function () {
@@ -61,6 +64,7 @@
         <div>
           <h3>Копирование в буфер обмена</h3>
 
+          <button class="btn btn__copy">Скопировать код</button>
           <pre class="code">
 navigator.clipboard.writeText("текст для копирования")
   .then(() => console.log("Скопировано!"))
