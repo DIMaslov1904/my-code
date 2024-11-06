@@ -20,7 +20,7 @@
         <div>
           <h3>Отцентровать абсолютный блок</h3>
 
-          <pre class="code">
+          <xmp class="code">
 .element {
   display: block;
   position: absolute;
@@ -29,7 +29,7 @@
   inset: 0;
   margin: auto;
 }
-          </pre>
+          </xmp>
         </div>
       </section>
 
@@ -45,8 +45,8 @@
           </p>
 
           <button class="btn">Скопировать код</button>
-          <pre class="code">
-&lt;script type="text/javascript">
+          <xmp class="code">
+<script type="text/javascript">
 (function () {
   "use strict";
   let connectedScript = false, timerId;
@@ -73,19 +73,126 @@
   document.addEventListener("click", connectScript);
   window.addEventListener("load", loadFallback);
 })()
-&lt;/script>
-          </pre>
+</script>
+          </xmp>
         </div>
 
         <div>
           <h3>Копирование в буфер обмена</h3>
 
           <button class="btn">Скопировать код</button>
-          <pre class="code">
+          <xmp class="code">
 navigator.clipboard.writeText("текст для копирования")
   .then(() => console.log("Скопировано!"))
   .catch(() => console.log("Скопировать не удалось"));
-          </pre>
+          </xmp>
+        </div>
+
+        <div>
+          <h3>Добаление блоков полей формы</h3>
+
+          <button class="btn">Скопировать html код</button>
+          <xmp class="code">
+<div data-js="origin_additional_place_work" style="display: none;">
+  <button data-js="remove_place_work" type="button">Удалить</button>
+  <input name="data_[{count}]">
+</div>
+
+<form>
+  <div data-js="insert_here_place_work"></div>
+  <button data-js="button_add_place_work" type="button">Добавить</button>
+</form>
+          </xmp>
+
+          <button class="btn">Скопировать js код</button>
+          <xmp class="code">
+class QuestionnaireForm {
+  // Дата атрибуты через которые находим нужные элементы
+  selector_fields = "origin_additional_place_work";
+  selector_add = "button_add_place_work";
+  selector_insert_here = "insert_here_place_work";
+  selector_remove = "remove_place_work";
+
+  constructor() {
+      this.counter = 0;
+
+      this.btn_add = document.querySelector(`[data-js="${this.selector_add}"]`);
+      if (!this.btn_add) return;
+      this.fields = this.init_fields();
+      this.insert_here = this.init_insert_here();
+      if (!this.fields || !this.insert_here) return;
+
+      this.btn_add.addEventListener('click', this.more_fields);
+  }
+
+  // Получаем поля которые будем копировать
+  init_fields = () =>  {
+      const origin_fields = document.querySelector(`[data-js="${this.selector_fields}"]`);
+      if (!origin_fields) {
+          console.error(`Не найден блок 'Место работы" с атрибутом data-js="${this.selector_fields}"`);
+          return;
+      }
+      const fields = origin_fields.cloneNode(true);
+      fields.removeAttribute('style');
+      return fields;
+  }
+
+  // Получаем блок в который будем добавлять новые поля
+  init_insert_here = () =>  {
+      const insert_here = document.querySelector(`[data-js="${this.selector_insert_here}"]`);
+      if (!insert_here) {
+          console.error(`Не найден блок, подставления дополнительных мест работы, с атрибутом data-js="${this.selector_insert_here}"`);
+          return;
+      }
+      return insert_here;
+  }
+
+  // Провереряем количество и если больше 4 штук (вместе с постоянной), то скрываем кнопку добавление доп полей
+  check_count = () => {
+    this.btn_add.style.display = this.counter > 3 ? "none" : ""
+  }
+
+  // Меняем индексы у полей после удаления
+  correctNumbering = () => {
+    const children_list = this.insert_here.children
+    for (let i=0;<children_list.length; i++) {
+      children_list[i].querySelectorAll('input[name]').forEach((item)=> {
+        item.name = item.name.replace(/\[(\d+)\]/,`[${i+1}]`);
+      })
+    }
+  }
+
+  // Удалаяем поля
+  remove_fields = (e) => {
+      this.counter--;
+      this.check_count();
+      e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+      this.correctNumbering();
+  }
+
+  // Если есть кнопка удаления, то подписываем на ее клик удаление
+  remove_hendler = (elem) => {
+      if (!elem) return;
+      elem.addEventListener('click', this.remove_fields);
+  }
+
+  // Добавляем поля
+  more_fields = () => {
+      this.counter++;
+      this.check_count();
+      const newFields = this.fields.cloneNode(true);
+
+      this.remove_hendler(newFields.querySelector(`[data-js="${this.selector_remove}"]`));
+
+      // заменяем шаблон номера блока и устанавливаем маску на поля
+      newFields.querySelectorAll('input[name]').forEach((child) => {
+          child.name = child.name.replace('{count}',this.counter);
+      })
+
+      this.insert_here.appendChild(newFields);
+  }
+}
+          </xmp>
         </div>
       </section>
     </main>

@@ -40,4 +40,5 @@
   color: aliceblue;
   padding: 25px 50px;
   max-width: 800px;
+  text-wrap: balance;
 }
