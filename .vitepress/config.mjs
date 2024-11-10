@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: '/my-code/',
   lang: 'ru-RU',
   title: "Код",
   srcDir: './src',
