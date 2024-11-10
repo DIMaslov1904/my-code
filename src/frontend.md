@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="src/assets/favicon.ico" type="image/x-icon">
-    <title>Инструкция</title>
-    <link rel="stylesheet" href="src/css/style.css" />
-    <script src="src/js/script.js"></script>
-  </head>
-  <body>
-    <main class="main">
-      <section class="section">
-        <h2>HTML</h2>
-      </section>
+---
+prev: false
+next: false
+---
 
-      <section class="section">
-        <h2>CSS</h2>
+# Frontend
 
-        <div>
-          <h3>Отцентровать абсолютный блок</h3>
+## HTML
 
-          <xmp class="code">
+## CSS
+
+**Отцентровать абсолютный блок**
+````css
 .element {
   display: block;
   position: absolute;
@@ -29,23 +19,16 @@
   inset: 0;
   margin: auto;
 }
-          </xmp>
-        </div>
-      </section>
+````
 
-      <section class="section">
-        <h2>JS</h2>
+## JS
 
-        <div>
-          <h3>Отложенное подключение скрипта</h3>
+**Отложенное подключение скрипта**
 
-          <p>
-            Подключение происходит по целевому действию пользователя или через 5
-            секунд полсе загрузки страницы
-          </p>
+Подключение происходит по целевому действию пользователя или через 5
+секунд полсе загрузки страницы
 
-          <button class="btn">Скопировать код</button>
-          <xmp class="code">
+```js
 <script type="text/javascript">
 (function () {
   "use strict";
@@ -74,38 +57,31 @@
   window.addEventListener("load", loadFallback);
 })()
 </script>
-          </xmp>
-        </div>
+```
 
-        <div>
-          <h3>Копирование в буфер обмена</h3>
+**Копирование в буфер обмена**
 
-          <button class="btn">Скопировать код</button>
-          <xmp class="code">
+```js
 navigator.clipboard.writeText("текст для копирования")
   .then(() => console.log("Скопировано!"))
   .catch(() => console.log("Скопировать не удалось"));
-          </xmp>
-        </div>
+```
 
-        <div>
-          <h3>Добаление блоков полей формы</h3>
+**Добаление блоков полей формы**
 
-          <button class="btn">Скопировать html код</button>
-          <xmp class="code">
-<div data-js="origin_additional_place_work" style="display: none;">
-  <button data-js="remove_place_work" type="button">Удалить</button>
-  <input name="data_[{count}]">
-</div>
+```html
+<template>
+  <button>Удалить</button>
+  <input name="data[{count}]">
+</template>
 
 <form>
-  <div data-js="insert_here_place_work"></div>
-  <button data-js="button_add_place_work" type="button">Добавить</button>
+  <div></div>
+  <button type="button">Добавить</button>
 </form>
-          </xmp>
+```
 
-          <button class="btn">Скопировать js код</button>
-          <xmp class="code">
+```js
 class QuestionnaireForm {
   // Дата атрибуты через которые находим нужные элементы
   selector_fields = "origin_additional_place_work";
@@ -192,9 +168,4 @@ class QuestionnaireForm {
       this.insert_here.appendChild(newFields);
   }
 }
-          </xmp>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+```
