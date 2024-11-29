@@ -748,3 +748,15 @@ $('Элемент с именем').each((_, el) => {
 })
 
 ```
+
+## Редирект для iOS и Android
+``` js
+//iPhone Version:
+if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+    window.location = "https://ВАША_ССЫЛКА_НА СТРАНИЦУ_В_APP_STORE";
+}
+//Android Version:
+if(navigator.userAgent.match(/android/i)) {
+    window.location = "https://ВАША_ССЫЛКА_НА СТРАНИЦУ_В_GOOGLE_PLAY";
+}
+```
