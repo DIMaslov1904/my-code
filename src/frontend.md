@@ -563,18 +563,18 @@ class InputFile {
 
 ## Простая маска на телефон
 
-```js
+```ts
 window.addEventListener("DOMContentLoaded", function() {
-    [].forEach.call( document.querySelectorAll('.js-phone-mask'), function(input) {
-        let keyCode;
-        function mask(event) {
+    document.querySelectorAll('.js-phone-mask').forEach(function(input) {
+        let keyCode: number;
+        function mask(this: HTMLInputElement, event: Event & { keyCode?: number, inputType?: string, type: string }): void {
             event.keyCode && (keyCode = event.keyCode);
             const pos = this.selectionStart;
-            if (pos < 3) event.preventDefault();
+            if (pos && pos < 3) event.preventDefault();
             const matrix = "+7 (___) ___ ____",
                 def = matrix.replace(/\D/g, "");
             let val = this.value.replace(/\D/g, "");
-            if (event.inputType === 'insertFromPaste') val = 7 + val.slice(-10);
+            if (event.inputType === 'insertFromPaste') val = '7' + val.slice(-10);
             let i = 0,
                 new_value = matrix.replace(/[_\d]/g, function(a) {
                     return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
@@ -584,15 +584,18 @@ window.addEventListener("DOMContentLoaded", function() {
                 i < 5 && (i = 3);
                 new_value = new_value.slice(0, i);
             }
-            let reg = matrix.substring(0, this.value.length).replace(/_+/g,
+            let reg: RegExp | string = matrix.substring(0, this.value.length).replace(/_+/g,
                 function(a) {
                     return "\\d{1," + a.length + "}";
                 }).replace(/[+()]/g, "\\$&");
             reg = new RegExp("^" + reg + "$");
             if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) this.value = new_value;
             if (event.type === "blur" && this.value.length < 5)  this.value = "";
+            if (event.type === 'focus') setTimeout(()=> this.selectionStart = this.selectionEnd = 10000, 0);
         }
-        "input focus blur keydown".split(" ").forEach(function(e){input.addEventListener(e,mask,false)});
+        ["input", "focus", "blur", "keydown"].forEach(function(e){
+            (input as HTMLInputElement).addEventListener(e, mask as EventListener, false);
+        });
     });
 });
 ```
