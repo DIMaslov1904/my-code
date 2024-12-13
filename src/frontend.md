@@ -763,3 +763,10 @@ if(navigator.userAgent.match(/android/i)) {
     window.location = "https://ВАША_ССЫЛКА_НА СТРАНИЦУ_В_GOOGLE_PLAY";
 }
 ```
+
+## Заполнить диапазот от до
+```js
+function* range(s, e) { while (s <= e) yield s++ }
+
+console.log([...range(1, 5)])
+```
