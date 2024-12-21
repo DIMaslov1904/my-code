@@ -85,6 +85,12 @@ next: false
 
 ## - JS
 
+## Отслеживание нескольких событий
+
+```js
+"input focus blur keydown".split(" ").forEach(function(e){input.addEventListener(e,()=>{},false)});
+```
+
 ## Отложенное подключение скрипта
 
 Подключение происходит по целевому действию пользователя или через 5
@@ -105,18 +111,13 @@ next: false
 
     connectedScript = true;
     clearTimeout(timerId);
-    window.removeEventListener("scroll", connectScript);
-    window.removeEventListener("touchstart", connectScript);
-    document.removeEventListener("mouseenter", connectScript);
-    document.removeEventListener("click", connectScript);
-    window.removeEventListener("load", loadFallback);
+    "scroll touchstart load".split(" ").forEach(function(e){window.removeEventListener(e,connectScript)});
+    "mouseenter click".split(" ").forEach(function(e){document.removeEventListener(e,connectScript)});
   }
 
+  "touchstart load".split(" ").forEach(function(e){window.addEventListener(e,connectScript)});
+  "mouseenter click".split(" ").forEach(function(e){document.addEventListener(e,connectScript)});
   window.addEventListener("scroll", connectScript, { passive: true });
-  window.addEventListener("touchstart", connectScript);
-  document.addEventListener("mouseenter", connectScript);
-  document.addEventListener("click", connectScript);
-  window.addEventListener("load", loadFallback);
 })()
 </script>
 ```
@@ -124,75 +125,44 @@ next: false
 ## Копирование в буфер обмена
 
 ```js
-navigator.clipboard.writeText("текст для копирования")
+navigator.clipboard.writeText(this.textContent)
   .then(() => console.log("Скопировано!"))
   .catch(() => console.log("Скопировать не удалось"));
 ```
 
 ## Добаление блоков полей формы
 
+Перепроверить
+
 ```html
-<template>
-  <button>Удалить</button>
+<template class="additional-work">
+  <button class="remove-work">Удалить</button>
   <input name="data[{count}]">
 </template>
 
 <form>
-  <div></div>
-  <button type="button">Добавить</button>
+  <div class="additional-works"></div>
+  <button class="add-work" type="button">Добавить</button>
 </form>
 ```
 
 ```js
-class QuestionnaireForm {
-  // Дата атрибуты через которые находим нужные элементы
-  selector_fields = "origin_additional_place_work";
-  selector_add = "button_add_place_work";
-  selector_insert_here = "insert_here_place_work";
-  selector_remove = "remove_place_work";
+function addWorkplaceField() {
+  const btn_add = document.querySelector('.add-work');
+  const insert_here = document.querySelector('.additional-works');
+  const template = document.querySelector('.additional-work').cloneNode(true);
+  let counter = 0; // счетчик доп рабочих мест
 
-  constructor() {
-      this.counter = 0;
+  btn_add.addEventListener('click', more_fields);
 
-      this.btn_add = document.querySelector(`[data-js="${this.selector_add}"]`);
-      if (!this.btn_add) return;
-      this.fields = this.init_fields();
-      this.insert_here = this.init_insert_here();
-      if (!this.fields || !this.insert_here) return;
-
-      this.btn_add.addEventListener('click', this.more_fields);
-  }
-
-  // Получаем поля которые будем копировать
-  init_fields = () =>  {
-      const origin_fields = document.querySelector(`[data-js="${this.selector_fields}"]`);
-      if (!origin_fields) {
-          console.error(`Не найден блок 'Место работы" с атрибутом data-js="${this.selector_fields}"`);
-          return;
-      }
-      const fields = origin_fields.cloneNode(true);
-      fields.removeAttribute('style');
-      return fields;
-  }
-
-  // Получаем блок в который будем добавлять новые поля
-  init_insert_here = () =>  {
-      const insert_here = document.querySelector(`[data-js="${this.selector_insert_here}"]`);
-      if (!insert_here) {
-          console.error(`Не найден блок, подставления дополнительных мест работы, с атрибутом data-js="${this.selector_insert_here}"`);
-          return;
-      }
-      return insert_here;
-  }
-
-  // Провереряем количество и если больше 4 штук (вместе с постоянной), то скрываем кнопку добавление доп полей
-  check_count = () => {
-    this.btn_add.style.display = this.counter > 3 ? "none" : ""
+  // Проверяем количество и если больше 4 штук (вместе с постоянной), то скрываем кнопку добавление доп полей
+  function check_count(){
+    btn_add.style.display = (counter > 3) ? 'none' : '';
   }
 
   // Меняем индексы у полей после удаления
   correctNumbering = () => {
-    const children_list = this.insert_here.children
+    const children_list = insert_here.children
     for (let i=0;<children_list.length; i++) {
       children_list[i].querySelectorAll('input[name]').forEach((item)=> {
         item.name = item.name.replace(/\[(\d+)\]/,`[${i+1}]`);
@@ -200,34 +170,26 @@ class QuestionnaireForm {
     }
   }
 
-  // Удалаяем поля
-  remove_fields = (e) => {
-      this.counter--;
-      this.check_count();
+  // Удаляем поля
+  function remove_fields(e) {
+      counter--;
+      check_count();
       e.target.parentElement.parentElement.removeChild(e.target.parentElement);
-      this.correctNumbering();
-  }
-
-  // Если есть кнопка удаления, то подписываем на ее клик удаление
-  remove_hendler = (elem) => {
-      if (!elem) return;
-      elem.addEventListener('click', this.remove_fields);
+      correctNumbering();
   }
 
   // Добавляем поля
-  more_fields = () => {
-      this.counter++;
-      this.check_count();
-      const newFields = this.fields.cloneNode(true);
-
-      this.remove_hendler(newFields.querySelector(`[data-js="${this.selector_remove}"]`));
-
+  function more_fields() {
+      counter++;
+      check_count();
+      const newFields = fields.cloneNode(true);
+      newFields.querySelector(`.remove-work`).addEventListener('click', remove_fields);
       // заменяем шаблон номера блока и устанавливаем маску на поля
       newFields.querySelectorAll('input[name]').forEach((child) => {
-          child.name = child.name.replace('{count}',this.counter);
+          child.name = child.name.replace('{count}',counter);
       })
 
-      this.insert_here.appendChild(newFields);
+      insert_here.appendChild(newFields);
   }
 }
 ```
@@ -663,18 +625,18 @@ class InputFile {
 
 ## Простая маска на телефон
 
-```js
+```ts
 window.addEventListener("DOMContentLoaded", function() {
-    [].forEach.call( document.querySelectorAll('.js-phone-mask'), function(input) {
-        let keyCode;
-        function mask(event) {
+    document.querySelectorAll('.js-phone-mask').forEach(function(input) {
+        let keyCode: number;
+        function mask(this: HTMLInputElement, event: Event & { keyCode?: number, inputType?: string, type: string }): void {
             event.keyCode && (keyCode = event.keyCode);
             const pos = this.selectionStart;
-            if (pos < 3) event.preventDefault();
+            if (pos && pos < 3) event.preventDefault();
             const matrix = "+7 (___) ___ ____",
                 def = matrix.replace(/\D/g, "");
             let val = this.value.replace(/\D/g, "");
-            if (event.inputType === 'insertFromPaste') val = 7 + val.slice(-10);
+            if (event.inputType === 'insertFromPaste') val = '7' + val.slice(-10);
             let i = 0,
                 new_value = matrix.replace(/[_\d]/g, function(a) {
                     return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
@@ -684,18 +646,18 @@ window.addEventListener("DOMContentLoaded", function() {
                 i < 5 && (i = 3);
                 new_value = new_value.slice(0, i);
             }
-            let reg = matrix.substring(0, this.value.length).replace(/_+/g,
+            let reg: RegExp | string = matrix.substring(0, this.value.length).replace(/_+/g,
                 function(a) {
                     return "\\d{1," + a.length + "}";
                 }).replace(/[+()]/g, "\\$&");
             reg = new RegExp("^" + reg + "$");
             if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) this.value = new_value;
             if (event.type === "blur" && this.value.length < 5)  this.value = "";
+            if (event.type === 'focus') setTimeout(()=> this.selectionStart = this.selectionEnd = 10000, 0);
         }
-        input.addEventListener("input", mask, false);
-        input.addEventListener("focus", mask, false);
-        input.addEventListener("blur", mask, false);
-        input.addEventListener("keydown", mask, false);
+        ["input", "focus", "blur", "keydown"].forEach(function(e){
+            (input as HTMLInputElement).addEventListener(e, mask as EventListener, false);
+        });
     });
 });
 ```
@@ -850,4 +812,23 @@ $('Элемент с именем').each((_, el) => {
   $(elChild).css('background-color', symbolColor($(elChild).text()))
 })
 
+```
+
+## Редирект для iOS и Android
+``` js
+//iPhone Version:
+if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+    window.location = "https://ВАША_ССЫЛКА_НА СТРАНИЦУ_В_APP_STORE";
+}
+//Android Version:
+if(navigator.userAgent.match(/android/i)) {
+    window.location = "https://ВАША_ССЫЛКА_НА СТРАНИЦУ_В_GOOGLE_PLAY";
+}
+```
+
+## Заполнить диапазот от до
+```js
+function* range(s, e) { while (s <= e) yield s++ }
+
+console.log([...range(1, 5)])
 ```

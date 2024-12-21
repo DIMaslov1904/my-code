@@ -1,4 +1,5 @@
 .vitepress/*
 !/.vitepress/config.mjs
 yarn.lock
+package-lock.json
 node_modules
