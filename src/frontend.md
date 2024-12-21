@@ -7,6 +7,98 @@ next: false
 
 ## - HTML
 
+## Прелодер
+<style>
+.loader {
+      --color: 255 255 255; /* цвет (rgb) */
+      font-size: 5rem;      /* размер */
+      width: 1em;
+      position: relative;
+      display: inline-block;
+      aspect-ratio: 1/1;
+    }
+    .loader::before,
+    .loader::after {
+      --fill-box-shadow: 0 0 0 .12em rgb(var(--color));
+      --box-shadow: 0 0 0 0 rgb(var(--color));
+      content: '';
+      position: absolute;
+      aspect-ratio: inherit;
+      border-radius: 50%;
+      animation-duration: 1.8s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      filter: drop-shadow(0 0 .08em rgba(var(--color) / .75));
+    }
+    .loader::before {
+      width: 1em;
+      box-shadow: inset var(--fill-box-shadow);
+      animation-name: pulsA;
+    }
+    .loader::after {
+      width: .76em;
+      inset: 0;
+      margin: auto;
+      box-shadow: var(--box-shadow);
+      animation-name: pulsB;
+    }
+    @keyframes pulsA {
+      0% {box-shadow: inset var(--fill-box-shadow);opacity: 1;}
+      50%,100% {box-shadow: inset var(--box-shadow);opacity: 0;}
+    }
+    @keyframes pulsB {
+      0%,50% {box-shadow: var(--box-shadow);opacity:0;}
+      100% {box-shadow: var(--fill-box-shadow);opacity:1;}
+    }
+  </style>
+  <span class="loader"></span>
+```html
+<style>
+    .loader {
+      --color: 255 255 255; /* цвет (rgb) */
+      font-size: 5rem;      /* размер */
+      width: 1em;
+      position: relative;
+      display: inline-block;
+      aspect-ratio: 1/1;
+    }
+    .loader::before,
+    .loader::after {
+      --fill-box-shadow: 0 0 0 .12em rgb(var(--color));
+      --box-shadow: 0 0 0 0 rgb(var(--color));
+      content: '';
+      position: absolute;
+      aspect-ratio: inherit;
+      border-radius: 50%;
+      animation-duration: 1.8s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      filter: drop-shadow(0 0 .08em rgba(var(--color) / .75));
+    }
+    .loader::before {
+      width: 1em;
+      box-shadow: inset var(--fill-box-shadow);
+      animation-name: pulsA;
+    }
+    .loader::after {
+      width: .76em;
+      inset: 0;
+      margin: auto;
+      box-shadow: var(--box-shadow);
+      animation-name: pulsB;
+    }
+    @keyframes pulsA {
+      0% {box-shadow: inset var(--fill-box-shadow);opacity: 1;}
+      50%,100% {box-shadow: inset var(--box-shadow);opacity: 0;}
+    }
+    @keyframes pulsB {
+      0%,50% {box-shadow: var(--box-shadow);opacity:0;}
+      100% {box-shadow: var(--fill-box-shadow);opacity:1;}
+    }
+  </style>
+  <span class="loader"></span>
+```
+
 ## Аккордион
 ```html
 <style>
