@@ -26,7 +26,7 @@ next: false
 ## Отслеживание нескольких событий
 
 ```js
-"input focus blur keydown".split(" ").forEach(function(e){input.addEventListener(e,()=>{},false)});
+["input", "focus", "blur", "keydown"].forEach(function(e){input.addEventListener(e,()=>{},false)});
 ```
 
 ## Отложенное подключение скрипта
@@ -36,27 +36,22 @@ next: false
 
 ```js
 <script type="text/javascript">
-(function () {
+function delayedLoading(fn) {
   "use strict";
   let connectedScript = false, timerId;
-
   function loadFallback() {timerId = setTimeout(connectScript, 5000)}
-
   function connectScript() {
     if (connectedScript) return;
-
-    // Выполняемая функция
-
+    fn();
     connectedScript = true;
     clearTimeout(timerId);
-    "scroll touchstart load".split(" ").forEach(function(e){window.removeEventListener(e,connectScript)});
-    "mouseenter click".split(" ").forEach(function(e){document.removeEventListener(e,connectScript)});
+    ["scroll", "touchstart", "load"].forEach(function(e){window.removeEventListener(e,connectScript)});
+    ["mouseenter", "click"].forEach(function(e){document.removeEventListener(e,connectScript)});
   }
-
-  "touchstart load".split(" ").forEach(function(e){window.addEventListener(e,connectScript)});
-  "mouseenter click".split(" ").forEach(function(e){document.addEventListener(e,connectScript)});
+  ["touchstart", "load"].forEach(function(e){window.addEventListener(e,connectScript)});
+  ["mouseenter", "click"].forEach(function(e){document.addEventListener(e,connectScript)});
   window.addEventListener("scroll", connectScript, { passive: true });
-})()
+}
 </script>
 ```
 
@@ -769,4 +764,21 @@ if(navigator.userAgent.match(/android/i)) {
 function* range(s, e) { while (s <= e) yield s++ }
 
 console.log([...range(1, 5)])
+```
+
+## Задержка debounce
+```
+/**
+ * debounce decorator
+ * @param {Function} func
+ * @param {Number} ms
+ * @see https://javascript.info/task/debounce
+ */
+ function debounce(func, ms) {
+  let timeout;
+  return function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
+  };
+}
 ```
