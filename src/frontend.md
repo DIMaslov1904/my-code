@@ -7,6 +7,198 @@ next: false
 
 ## - HTML
 
+## Переключатель
+```html
+ <style>
+  .toggle {
+    font-size: 40px;
+    appearance: none;
+    width: 2.12em;
+    height: 1em;
+    background-color: grey;
+    border-radius: .5em;
+    display: flex;
+    align-items: center;
+    padding: .12em;
+    transition: background-color .3s ease;
+    border: none; 
+  }
+  .toggle:not(:disabled) {
+    cursor: pointer;
+  }
+  .toggle::after {
+    content: '';
+    display: block;
+    width: .87em;
+    height: .87em;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform .3s ease;
+  }
+  .toggle:checked {
+    background-color:#1cc668;
+  }
+  .toggle:checked::after {
+    transform: translateX(1em);
+  }
+ </style>
+<input class="toggle" type="checkbox" />
+```
+
+## Прелодер
+<style>
+.loader {
+      --color: 255 255 255; /* цвет (rgb) */
+      font-size: 5rem;      /* размер */
+      width: 1em;
+      position: relative;
+      display: inline-block;
+      aspect-ratio: 1/1;
+    }
+    .loader::before,
+    .loader::after {
+      --fill-box-shadow: 0 0 0 .12em rgb(var(--color));
+      --box-shadow: 0 0 0 0 rgb(var(--color));
+      content: '';
+      position: absolute;
+      aspect-ratio: inherit;
+      border-radius: 50%;
+      animation-duration: 1.8s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      filter: drop-shadow(0 0 .08em rgba(var(--color) / .75));
+    }
+    .loader::before {
+      width: 1em;
+      box-shadow: inset var(--fill-box-shadow);
+      animation-name: pulsA;
+    }
+    .loader::after {
+      width: .76em;
+      inset: 0;
+      margin: auto;
+      box-shadow: var(--box-shadow);
+      animation-name: pulsB;
+    }
+    @keyframes pulsA {
+      0% {box-shadow: inset var(--fill-box-shadow);opacity: 1;}
+      50%,100% {box-shadow: inset var(--box-shadow);opacity: 0;}
+    }
+    @keyframes pulsB {
+      0%,50% {box-shadow: var(--box-shadow);opacity:0;}
+      100% {box-shadow: var(--fill-box-shadow);opacity:1;}
+    }
+  </style>
+  <span class="loader"></span>
+```html
+<style>
+    .loader {
+      --color: 255 255 255; /* цвет (rgb) */
+      font-size: 5rem;      /* размер */
+      width: 1em;
+      position: relative;
+      display: inline-block;
+      aspect-ratio: 1/1;
+    }
+    .loader::before,
+    .loader::after {
+      --fill-box-shadow: 0 0 0 .12em rgb(var(--color));
+      --box-shadow: 0 0 0 0 rgb(var(--color));
+      content: '';
+      position: absolute;
+      aspect-ratio: inherit;
+      border-radius: 50%;
+      animation-duration: 1.8s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      filter: drop-shadow(0 0 .08em rgba(var(--color) / .75));
+    }
+    .loader::before {
+      width: 1em;
+      box-shadow: inset var(--fill-box-shadow);
+      animation-name: pulsA;
+    }
+    .loader::after {
+      width: .76em;
+      inset: 0;
+      margin: auto;
+      box-shadow: var(--box-shadow);
+      animation-name: pulsB;
+    }
+    @keyframes pulsA {
+      0% {box-shadow: inset var(--fill-box-shadow);opacity: 1;}
+      50%,100% {box-shadow: inset var(--box-shadow);opacity: 0;}
+    }
+    @keyframes pulsB {
+      0%,50% {box-shadow: var(--box-shadow);opacity:0;}
+      100% {box-shadow: var(--fill-box-shadow);opacity:1;}
+    }
+  </style>
+  <span class="loader"></span>
+```
+
+## Аккордион
+```html
+<style>
+  .accordion__title {
+    display: inline;
+  }
+  .accordion__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition-duration: .3s;
+  }
+  .accordion__body {
+    overflow: hidden;
+  }
+  .accordion__details[open] + .accordion__content {
+    grid-template-rows: 1fr;
+  }
+</style>
+
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_1">Вопрос 1</h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_1" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus, ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae amet!
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_2">Вопрос 2</h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_2" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus, ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae amet!
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_3">Вопрос 3</h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_3" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus, ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae amet!
+    </div>
+  </div>
+</div>
+```
+
 ## - CSS
 
 ## Отцентровать абсолютный блок
