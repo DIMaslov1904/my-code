@@ -228,11 +228,12 @@ next: false
 
 ```js
 <script type="text/javascript">
-function delayedLoading(fn) {
+function delayedLoading(fn, name) {
   "use strict";
   let connectedScript = false, timerId;
-  function loadFallback() {timerId = setTimeout(connectScript, 5000)}
-  function connectScript() {
+  function loadFallback(e) {timerId = setTimeout(() => connectScript(e), 5000)}
+  function connectScript(e) {
+    console.log(`Скрипт %c${name}`, "color: #26bfa5;", "запустился по эвенту:", e);
     if (connectedScript) return;
     fn();
     connectedScript = true;
@@ -240,7 +241,8 @@ function delayedLoading(fn) {
     ["scroll", "touchstart", "load"].forEach(function(e){window.removeEventListener(e,connectScript)});
     ["mouseenter", "click"].forEach(function(e){document.removeEventListener(e,connectScript)});
   }
-  ["touchstart", "load"].forEach(function(e){window.addEventListener(e,connectScript)});
+  window.addEventListener('load', loadFallback);
+  window.addEventListener('touchstart',connectScript);
   ["mouseenter", "click"].forEach(function(e){document.addEventListener(e,connectScript)});
   window.addEventListener("scroll", connectScript, { passive: true });
 }
