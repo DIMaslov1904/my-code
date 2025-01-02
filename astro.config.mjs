@@ -6,7 +6,6 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	site: 'https://dimaslov1904.github.io',
 	base: 'my-code',
-	outDir: './docs',
 	integrations: [
 		starlight({
 			title: 'Мой код',
