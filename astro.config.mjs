@@ -4,14 +4,14 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://dimaslov1904.github.io/',
-	base: '/my-code/',
+	site: 'https://dimaslov1904.github.io',
+	base: 'https://dimaslov1904.github.io/my-code',
 	outDir: './docs',
 	integrations: [
 		starlight({
 			title: 'Мой код',
 			editLink: {
-				baseUrl: 'https://github.com/withastro/starlight/edit/main/',
+				baseUrl: 'https://github.com/DIMaslov1904/my-code/blob/main/',
 			},
 			locales: {
         root: {
