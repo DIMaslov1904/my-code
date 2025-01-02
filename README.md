@@ -1,5 +1,6 @@
 # Мой код
 
+[GitHub page](https://dimaslov1904.github.io/my-code/)
 
 
 ## 🚀 Структура проекта
