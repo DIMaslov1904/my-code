@@ -1,0 +1,57 @@
+<template class="additional-work">
+  <button class="remove-work">Удалить</button>
+  <input name="data[{count}]">
+</template>
+
+<form>
+  <div class="additional-works"></div>
+  <button class="add-work" type="button">Добавить</button>
+</form>
+
+<script type="js">
+  function addWorkplaceField() {
+  const btn_add = document.querySelector('.add-work');
+  const insert_here = document.querySelector('.additional-works');
+  const template = document.querySelector('.additional-work').cloneNode(true);
+  let counter = 0; // счетчик доп рабочих мест
+
+  btn_add.addEventListener('click', more_fields);
+
+  // Проверяем количество и если больше 4 штук (вместе с постоянной), то скрываем кнопку добавление доп полей
+  function check_count(){
+    btn_add.style.display = (counter > 3) ? 'none' : '';
+  }
+
+  // Меняем индексы у полей после удаления
+  correctNumbering = () => {
+    const children_list = insert_here.children
+    for (let i=0;<children_list.length; i++) {
+      children_list[i].querySelectorAll('input[name]').forEach((item)=> {
+        item.name = item.name.replace(/\[(\d+)\]/,`[${i+1}]`);
+      })
+    }
+  }
+
+  // Удаляем поля
+  function remove_fields(e) {
+      counter--;
+      check_count();
+      e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+      correctNumbering();
+  }
+
+  // Добавляем поля
+  function more_fields() {
+      counter++;
+      check_count();
+      const newFields = template.cloneNode(true);
+      newFields.querySelector(`.remove-work`).addEventListener('click', remove_fields);
+      // заменяем шаблон номера блока и устанавливаем маску на поля
+      newFields.querySelectorAll('input[name]').forEach((child) => {
+          child.name = child.name.replace('{count}',counter);
+      })
+
+      insert_here.appendChild(newFields);
+  }
+}
+</script>

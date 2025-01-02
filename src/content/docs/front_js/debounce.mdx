@@ -1,0 +1,20 @@
+---
+title: Задержка debounce
+---
+
+
+```js
+/**
+ * debounce decorator
+ * @param {Function} func
+ * @param {Number} ms
+ * @see https://javascript.info/task/debounce
+ */
+ function debounce(func, ms) {
+  let timeout;
+  return function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
+  };
+}
+```

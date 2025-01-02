@@ -1,0 +1,21 @@
+---
+title: Перевод микросекунд в период
+---
+
+```js
+function durationFormat(duration) {
+  let delta = duration / 1000,
+  result = '';
+  const days = Math.floor(delta / 86400);
+  result += days ? `${days} дн ` : '';
+  delta -= days * 86400;
+  const hours = Math.floor(delta / 3600) % 24;
+  result += hours ? hours + ' ч ' : '';
+  delta -= hours * 3600;
+  const minutes = Math.floor(delta / 60) % 60;
+  result += minutes ? minutes + ' м ' : '';
+  delta -= minutes * 60;
+  const seconds = Math.floor(delta % 60); 
+  return result + seconds + ' с';
+}
+```

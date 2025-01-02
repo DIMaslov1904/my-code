@@ -1,0 +1,50 @@
+---
+title: Простой слайдер
+---
+
+перепроверить
+
+```js
+class Slider {
+  constructor(selector) {
+    this.slider = document.querySelector(selector)
+    this.prevButton = this.slider.querySelector('.prev-button')
+    this.nextButton = this.slider.querySelector('.next-button')
+    this.slides = Array.from(this.slider.querySelectorAll('img'))
+    this.slideCount = this.slides.length
+    this.slideIndex = 0
+    this._initial()
+  }
+
+  _initial() {
+    if (this.slideCount < 2) {
+      this.prevButton.style.display = 'none'
+      this.nextButton.style.display = 'none'
+    } else {
+      this.prevButton.addEventListener('click', this.showPreviousSlide)
+      this.nextButton.addEventListener('click', this.showNextSlide)
+      this._updateSlider()
+    }
+  }
+
+  _updateSlider() {
+    this.slides.forEach((slide, index) => {
+      if (index === this.slideIndex) {
+        slide.style.display = 'block';
+      } else {
+        slide.style.display = 'none';
+      }
+    })
+  }
+
+  showPreviousSlide = () => {
+    this.slideIndex = (this.slideIndex - 1 + this.slideCount) % this.slideCount
+    this._updateSlider()
+  }
+
+  showNextSlide = () => {
+    this.slideIndex = (this.slideIndex + 1) % this.slideCount
+    this._updateSlider()
+  }
+}
+```

@@ -1,0 +1,77 @@
+---
+title: Работа с датами
+---
+
+```ts
+type InputDate = Date | string | number | null;
+
+const created_at = new Date();
+
+export function parsDate(date: InputDate) {
+  if (!date) {
+    return null;
+  } else if (typeof date === "string") {
+    return new Date(date);
+  } else if (typeof date === "number") {
+    return new Date(String(date).length === 10 ? date * 1000 : date);
+  } else {
+    return date;
+  }
+}
+
+function checkDate(date: InputDate) {
+  return date instanceof Date ? date : parsDate(date);
+}
+
+function getDateNoTime(date: InputDate) {
+  const nDate = checkDate(date);
+  return nDate
+    ? new Date(nDate.getFullYear(), nDate.getMonth(), nDate.getDate())
+    : null;
+}
+
+export function formateDate(date: InputDate, format: string = "DD.MM.YYYY") {
+  const fDate = checkDate(date);
+  if (!fDate) return "";
+  return format
+    .replace(/\bYYYY\b/, String(fDate.getFullYear()))
+    .replace(/\bDD\b/, String(fDate.getDate()).padStart(2, "0"))
+    .replace(/\bMM\b/, String(fDate.getMonth() + 1).padStart(2, "0"));
+}
+
+export function formateTime(date: InputDate, format: string = "HH:mm") {
+  const fDate = checkDate(date);
+  if (!fDate) return "";
+  return format
+    .replace(/\bHH\b/, String(fDate.getHours()).padStart(2, "0"))
+    .replace(/\bmm\b/, String(fDate.getMinutes()).padStart(2, "0"))
+    .replace(/\bss\b/, String(fDate.getSeconds()));
+}
+
+export function daysInMonth(month: number, year: number) {
+  return new Date(year ?? created_at.getFullYear(), month, 0).getDate();
+}
+
+export function dateDiff(date1: InputDate, date2: InputDate, accountTime: Boolean = true) {
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  const fDate1 = checkDate(date1);
+  const fDate2 = checkDate(date2);
+
+  const millisBetween = accountTime
+    ? Number(fDate2) - Number(fDate1)
+    : Number(getDateNoTime(fDate2)) - Number(getDateNoTime(fDate1));
+
+  return Math.round(millisBetween / millisecondsPerDay);
+}
+
+export default {
+  parsDate,
+  formateDate,
+  formateTime,
+  daysInMonth,
+};
+
+// return new Date(props.date).toLocaleDateString("ru-RU", {
+//   timeZone: "Europe/Moscow",
+// });
+```

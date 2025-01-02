@@ -1,0 +1,35 @@
+<input class="toggle" type="checkbox" />
+
+<style>
+  .toggle {
+    font-size: 40px;
+    appearance: none;
+    width: 2.12em;
+    height: 1em;
+    background-color: grey;
+    border-radius: 0.5em;
+    display: flex;
+    align-items: center;
+    padding: 0.12em;
+    transition: background-color 0.3s ease;
+    border: none;
+  }
+  .toggle:not(:disabled) {
+    cursor: pointer;
+  }
+  .toggle::after {
+    content: "";
+    display: block;
+    width: 0.87em;
+    height: 0.87em;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  .toggle:checked {
+    background-color: #1cc668;
+  }
+  .toggle:checked::after {
+    transform: translateX(1em);
+  }
+</style>

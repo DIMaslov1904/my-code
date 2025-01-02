@@ -1,0 +1,68 @@
+---
+title: Получение цвета из буквы/букв
+---
+
+перепроверить
+
+```js
+const symColor = {
+  'А': '#ff5454',
+  'Б': '#a28882',
+  'В': '#ab7464',
+  'Г': '#a4aeac',
+  'Д': '#7a676b',
+  'Е': '#4c8af2',
+  'Ё': '#4cbad6',
+  'Ж': '#f5cc4c',
+  'З': '#84e26c',
+  'И': '#4ca2ca',
+  'Й': '#4ca2ca',
+  'К': '#9e6558',
+  'Л': '#e1e59a',
+  'М': '#ff8b4c',
+  'Н': '#4db679',
+  'О': '#cbcb44',
+  'П': '#dbd9d3',
+  'Р': '#6e666c',
+  'С': '#d1eea8',
+  'Т': '#81868b',
+  'У': '#f0eb4d',
+  'Ф': '#6e62ae',
+  'Х': '#dddbbd',
+  'Ц': '#cbdf92',
+  'Ч': '#dfac77',
+  'Ш': '#cac0ab',
+  'Щ': '#c5a897',
+  'Ъ': '#78787c',
+  'Ы': '#756766',
+  'Ь': '#e9e9e1',
+  'Э': '#a286ff',
+  'Ю': '#f9bc52',
+  'Я': '#f94c81',
+  '0': '#73bfd2',
+  '1': '#f69cac',
+  '2': '#8e8695',
+  '3': '#88d05b',
+  '4': '#efc74c',
+  '5': '#ff5454',
+  '6': '#5485d5',
+  '7': '#c3ef89',
+  '8': '#50b2ca',
+  '9': '#7871a8',
+  transcription: { A: 'А', B: 'Б', C: 'Ц', D: 'Д', E: 'Е', F: 'Ф', G: 'Г', H: 'Х', I: 'И', J: 'Ж', K: 'К', L: 'Л', M: 'М', N: 'Н', O: 'О', P: 'П', Q: 'Ю', R: 'Р', S: 'С', T: 'Т', U: 'У', V: 'В', W: 'В', X: 'Х', Y: 'Ю', Z: 'З' }
+}
+
+function symbolColor(str) {
+  const sym = fColor(String(str)[0].toUpperCase())
+  return (sym in symColor || sym in symColor.transcription[sym]) ? symColor[sym] ?? symColor.transcription[sym] : '#222222'
+}
+
+
+// пример использования jQuery
+$('Элемент с именем').each((_, el) => {
+  let userName = $(el).text().split(' ', 2)
+  userName = (userName[1]) ? userName[0][0] + userName[1][0] : userName[0][0]
+  let elChild = $(el).parent().children('Элемент где нужно писать буквы и закрашивать фон').text(userName)
+  $(elChild).css('background-color', symbolColor($(elChild).text()))
+})
+```

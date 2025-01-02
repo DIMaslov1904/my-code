@@ -1,0 +1,27 @@
+---
+title: Отложенная загрузка скриптов
+---
+
+Подключение происходит по целевому действию пользователя или через 5
+секунд полсе загрузки страницы
+
+```js {6}
+function delayedLoading(fn, name) {
+  "use strict";
+  let connectedScript = false, timerId;
+  function loadFallback(e) {timerId = setTimeout(() => connectScript(e), 5000)}
+  function connectScript(e) {
+    console.log(`Скрипт %c${name}`, "color: #26bfa5;", "запустился по эвенту:", e);
+    if (connectedScript) return;
+    fn();
+    connectedScript = true;
+    clearTimeout(timerId);
+    ["scroll", "touchstart", "load"].forEach(function(e){window.removeEventListener(e,connectScript)});
+    ["mouseenter", "click"].forEach(function(e){document.removeEventListener(e,connectScript)});
+  }
+  window.addEventListener('load', loadFallback);
+  window.addEventListener('touchstart',connectScript);
+  ["mouseenter", "click"].forEach(function(e){document.addEventListener(e,connectScript)});
+  window.addEventListener("scroll", connectScript, { passive: true });
+}
+```

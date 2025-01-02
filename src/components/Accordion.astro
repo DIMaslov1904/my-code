@@ -1,0 +1,73 @@
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_1">
+        Вопрос 1
+      </h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_1" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
+      perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus,
+      ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae
+      amet!
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_2">
+        Вопрос 2
+      </h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_2" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
+      perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus,
+      ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae
+      amet!
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <details class="accordion__details" name="faq">
+    <summary class="accordion__details">
+      <h3 class="accordion__title" role="term" aria-details="faq_3">
+        Вопрос 3
+      </h3>
+    </summary>
+  </details>
+
+  <div class="accordion__content" id="faq_3" role="definition">
+    <div class="accordion__body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
+      perspiciatis accusamus amet dolorem soluta sit molestias necessitatibus,
+      ab rerum odio iure nam dolorum culpa doloribus ex ipsam. Ab, molestiae
+      amet!
+    </div>
+  </div>
+</div>
+
+<style>
+  .accordion__title {
+    display: inline;
+  }
+  .accordion__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition-duration: 0.3s;
+  }
+  .accordion__body {
+    overflow: hidden;
+  }
+  .accordion__details[open] + .accordion__content {
+    grid-template-rows: 1fr;
+  }
+</style>

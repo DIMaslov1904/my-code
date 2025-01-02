@@ -1,0 +1,25 @@
+---
+title: Запрос файла. Получаем размер файла
+---
+
+```js
+export async function getFile (href) {
+  function getExtension(str) {
+    return str.slice(((str.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+  }
+
+  function getFileNameFromHref() {
+    return href.substring(
+      href.lastIndexOf("/") + 1,
+      href.lastIndexOf(".")
+    )
+  }
+
+  const response = await fetch(href, { method: "HEAD" })
+  const size = Number(response.headers.get("content-length"))
+  const name = getFileNameFromHref()
+  const extension = getExtension(href)
+
+  return { name, extension, size }
+}
+```

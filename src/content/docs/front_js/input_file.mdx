@@ -1,0 +1,164 @@
+---
+title: Input file
+---
+
+Я бы пересмотрел свой подход
+
+```js
+/
+ * inputFile v0.2
+ * developed by DIMaslov
+ */
+
+class InputFile {
+  dt = new DataTransfer();
+
+  constructor(input) {
+    this.input = input;
+    this._init();
+  }
+
+  _initDefaultName = () => {
+    if (this.input.placeholder)
+      return this.input.placeholder
+    else if (this.multiple)
+      return 'Выберите файл(ы)'
+    return 'Выберите файл'
+  }
+
+  _init = () => {
+    this.multiple = this.input.getAttribute('multiple') !== null
+    this.defaultName = this._initDefaultName()
+    this.disabled = this.input.getAttribute('disabled') !== null
+    this._createWrapper();
+    this._run();
+    this._initValues();
+  }
+
+  _initValues = () => {
+    const values = this.input.getAttribute('data-init-value')
+    if (values) {
+      if (this.multiple) {
+        try {
+          this.addFiles(JSON.parse(values))
+        }
+        catch (err) {
+          console.error(`input[name=${this.input.name}] атрибут data-init-value имеет не верный формат.\n\nУкажите в формате: data-init-value='["url-file", "url-file"]'`)
+        }
+      } else {
+        this.addFiles([values])
+      }
+    }
+  }
+
+  _createElement(tag, className) {
+    const newElement = document.createElement(tag)
+    if (className) newElement.classList.add(className)
+    return newElement
+  }
+
+  _createWrapper () {
+    const org_html = this.input;
+    org_html.classList.add('n-input-file')
+    this.wrapper = this._createElement('label', `n-input-file__container`);
+    org_html.parentNode.insertBefore(this.wrapper, org_html);
+    this.wrapper.appendChild(org_html);
+    const nameContainer = this._createElement('div', 'n-input-file__name')
+    this.name = this._createElement('span')
+    this.name.textContent = this.defaultName;
+    nameContainer.appendChild(this.name);
+    this.wrapper.appendChild(nameContainer);
+    this.list = this._createElement('div', `n-input-file__list`)
+    if (this.disabled) this.list.classList.add('disabled')
+    this.wrapper.insertAdjacentElement('afterend', this.list)
+  }
+
+  _run () {
+    this.input.addEventListener('change', this._handlerChange)
+  }
+
+  _handlerChange = () => {
+    this.list.textContent = '';
+    if (this.multiple) {
+      this._handlerMultipleChange()
+    } else {
+      this.dt = new DataTransfer();
+      const file = this.input.files[0];
+      if (file) this.dt.items.add(file);
+      this.name.textContent = file ? file.name : this.defaultName;
+    }
+  }
+
+  _handlerMultipleChange() {
+    this.dt = new DataTransfer();
+    for(let i = 0; i < this.input.files.length; i++) {
+      const file = this.input.files[i];
+      this._addFileLine(file)
+    }
+  }
+
+  _addFileLine = (file, ind, href) => {
+    this.dt.items.add(file);
+    const name = href
+      ? this.multiple ? `Прикрепленный файл ${ind + 1}` : 'Прикрепленный файл'
+      : file.name;
+    const fileLine = this._createElement('div', 'n-input-file__item');
+    fileLine.innerHTML =  href
+      ? `<a href="${href}" target="_blank">${name}</a>`
+      : `<span>${name}<span>`;
+    const removeButton = this._createElement('button', 'n-input-file__remove')
+    removeButton.addEventListener('click', (e) => this._removeFilesItem(e, file.name, fileLine))
+    fileLine.appendChild(removeButton)
+    this.list.appendChild(fileLine);
+  }
+
+  _removeFilesItem(event, name, fileLine) {
+    fileLine.remove();
+    for(let i = 0; i < this.dt.items.length; i++){
+      if(name === this.dt.items[i].getAsFile().name){
+        this.dt.items.remove(i);
+      }
+    }
+    this.input.files = this.dt.files;
+    const eventChange = new Event("change");
+    this.input.dispatchEvent(eventChange);
+    this.input.closest("form")?.dispatchEvent(eventChange);
+  }
+
+  unload = () => {
+    this.input.removeEventListener('change', this._handlerChange)
+    this.wrapper.parentNode.insertBefore(this.input, this.wrapper);
+    this.input.classList.remove('n-input-file')
+    this.wrapper.remove();
+    if (this.list) this.list.remove();
+  }
+
+  inputFile = () => {
+    this._init();
+  }
+
+  reset = () => {
+    this.addFiles([])
+  }
+
+  addFiles = (files) => {
+    try {
+      this.dt = new DataTransfer();
+      this.list.textContent = '';
+
+      if (Array.isArray(files)) {
+        files.forEach((href, ind) => {
+          const file = new File([], href, {type: 'downloaded/server'});
+          this._addFileLine(file, ind, href)
+        })
+      } else if (files) {
+        const file = new File([], files, {type: 'downloaded/server'});
+        this._addFileLine(file, 0, files)
+      }
+      this.input.files = this.dt.files;
+    } catch {
+      console.error('Ошибка добавления файлов в inputFile ' + this.input.name)
+    }
+  }
+}
+```

@@ -1,0 +1,16 @@
+---
+title: Получаем цвет фона (темный или светлый)
+---
+
+```ts
+import { hexToRgb } from "./hexToRgb";
+
+export function isBackgroundDark(color: string) {
+  const rgb = color.includes("#")
+    ? hexToRgb(color).match(/\d+/g)
+    : color.match(/\d+/g);
+  const luma = 186;
+  if (!rgb) return true;
+  return +rgb[0] * 0.299 + +rgb[1] * 0.587 + +rgb[2] * 0.114 < luma;
+}
+```

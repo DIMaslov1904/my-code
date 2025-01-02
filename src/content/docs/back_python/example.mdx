@@ -1,0 +1,14 @@
+---
+title: Format bytes
+---
+
+```python
+import math
+def formatBytes(size: int, decimals:int = 2) -> str:
+  if not size: return "0 байт"
+  k = 1024
+  dm = 0 if decimals < 0 else decimals
+  sizes = ["байт", "КБ", "МБ", "ГБ", "ТБ", "ПБ"]
+  i = math.floor(math.log(size) / math.log(k))
+  return f'{size / math.pow(k, i):.{dm if i > 0 else 0}f} {sizes[i]}'
+```

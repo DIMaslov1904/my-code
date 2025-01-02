@@ -1,0 +1,9 @@
+---
+title: Копирование в буфер обмена
+---
+
+```js
+navigator.clipboard.writeText(this.textContent)
+  .then(() => console.log("Скопировано!"))
+  .catch(() => console.log("Скопировать не удалось"));
+```
