@@ -1,0 +1,15 @@
+---
+title: Карточка (анимированная) 
+---
+
+import Component from '../../../components/Card1.astro';
+import ComponentCode from '../../../components/Card1.astro?raw';
+import Card from '../../../components/_Card.astro';
+import {Code} from '@astrojs/starlight/components';
+
+
+<Card>
+<Component/>
+</Card>
+
+<Code code={ComponentCode} lang="html" />
