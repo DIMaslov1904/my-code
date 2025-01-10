@@ -1,0 +1,139 @@
+---
+title: JS метод добавления в корзину
+---
+
+Посмотреть и упростить
+
+``` js
+class UserCart {
+    _key = 'userCart'
+    _text = {
+        add: 'Добавить в корзину',
+        remove: 'Удалить из корзины'
+    }
+    _linkCreateOrder = '/orders/create'
+
+    constructor() {
+        if (window.location.pathname !== this._linkCreateOrder) {
+            this.cart = this.getCartLS()
+            this._init()
+        }
+    }
+
+    _init = () => {
+        document.querySelectorAll('.products-card__add-to-cart').forEach((button) => {
+            const productId = button.closest('[data-productid]').dataset.productid
+            if (this.cart.includes(productId)) button.innerText = this._text.remove
+            button.addEventListener('click', () => this._onClick(button, productId))
+        })
+        this._toggleShowFloatingBasket()
+    }
+
+    _onClick = (button, productId) => {
+        const action = this.toggleProduct(productId)
+        button.innerText = (action === 'added') ? this._text.remove : this._text.add
+    }
+
+    getCartLS = () => {
+        const userCartLS = JSON.parse(localStorage.getItem(this._key))
+        return userCartLS ?? []
+    }
+
+    resetCart = () => {
+        this.cart = []
+        localStorage.removeItem(this._key)
+    }
+
+    _setCartLS = () => {
+        if (this.cart.length < 1) {
+            this.resetCart()
+        } else {
+            localStorage.setItem(this._key, JSON.stringify(this.cart))
+        }
+    }
+
+    addProduct = (id) => {
+        if (!this.cart.includes(id)) {
+            this.cart.push(id)
+            this._setCartLS()
+            this._toggleShowFloatingBasket()
+            return 'added'
+        }
+    }
+
+    removeProduct = (id) => {
+        if (this.cart.includes(id)) {
+            this.cart.splice(this.cart.indexOf(id), 1)
+            this._setCartLS()
+            this._toggleShowFloatingBasket()
+            return 'deleted'
+        }
+    }
+
+    toggleProduct = (id) => {
+        return this.removeProduct(id) ?? this.addProduct(id)
+    }
+
+    _toggleShowFloatingBasket = () => {
+        if (this.cart.length > 0) {
+            if (!this.floatingBasket) {
+                this._createFloatingBasket()
+            }
+            this._fillFloatingBasket()
+        } else {
+            if (this.floatingBasket) {
+                this.floatingBasket.remove()
+                this.floatingBasket = null
+            }
+        }
+    }
+
+    _fillFloatingBasket = () => {
+        const list = this.floatingBasket.querySelector('.floating-basket__list')
+        list.innerHTML = ''
+        this.cart.forEach((productId) => {
+            const text = `Элемент с id ${productId}`
+            const newItem = this._createElement('div', 'floating-basket__item', text)
+            const buttonRemove = this._createElement('button', 'floating-basket__remove')
+            buttonRemove.addEventListener('click', () => {
+                try {
+                    document.querySelector(`[data-productid="${productId}"] .products-card__add-to-cart`)
+                        .innerText = this._text.add
+                } catch {
+                }
+                this.removeProduct(productId)
+            })
+            newItem.appendChild(buttonRemove)
+            list.appendChild(newItem)
+        })
+    }
+
+    _createElement = (tag, classNames, text) => {
+        const newElement = document.createElement(tag)
+        if (classNames) newElement.classList.add(classNames)
+        if (text) newElement.innerText = text
+        return newElement
+    }
+
+    _createFloatingBasket = () => {
+        const floatingBasket = this._createElement('div', 'floating-basket')
+
+        floatingBasket.appendChild(
+            this._createElement('span', 'floating-basket__title', 'Корзина')
+        )
+        floatingBasket.appendChild(
+            this._createElement('div', 'floating-basket__list')
+        )
+        const link = this._createElement('a', 'floating-basket__button', 'Оформить')
+        link.setAttribute('href', this._linkCreateOrder)
+        floatingBasket.appendChild(link)
+
+        this.floatingBasket = floatingBasket
+        document.body.appendChild(floatingBasket)
+    }
+
+}
+
+const userCart = new UserCart()
+
+```

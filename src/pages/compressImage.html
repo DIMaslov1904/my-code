@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body style="background-color:#222;color:#fff">
+
+  <input type="file" id="inputImg">
+
+  <script>
+    async function compressImage(blobImg, percent) {
+      const bitmap = await createImageBitmap(blobImg);
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      ctx.drawImage(bitmap, 0, 0);
+      let dataUrl = canvas.toDataURL("image/jpeg", percent / 100);
+      return dataUrl;
+    }
+
+    function createLinkDownload(url) {
+      const a = document.createElement('a')
+      a.setAttribute('href', url)
+      a.setAttribute('download', 'compressFile.jpeg')
+      a.innerText = 'Скачать'
+      document.body.appendChild(a)
+    }
+
+    inputImg.addEventListener('change', async (e) => {
+      const img = e.target.files[0];
+      console.log('File Name: ', img.name)
+      console.log('Original Size: ', img.size.toLocaleString())
+
+      const imgCompressed = await compressImage(img, 75) // set to 75%
+      const compSize = atob(imgCompressed.split(",")[1]).length;
+      console.log('Compressed Size: ', compSize.toLocaleString())
+
+      createLinkDownload(imgCompressed)
+    })
+  </script>
+
+</body>
+
+</html>
