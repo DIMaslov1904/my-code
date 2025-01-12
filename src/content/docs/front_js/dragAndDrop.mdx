@@ -1,0 +1,71 @@
+---
+title: Drag and Drop
+---
+
+```js
+export const dragAndDrop = input => {
+  const events = ['dragenter', 'dragover', 'dragleave', 'drop']
+  const listInput = input.parentNode.previousElementSibling
+  const listDiv = input.parentNode.previousElementSibling.previousElementSibling
+  const dropArea = input.closest('.input-file__label')
+
+  events.forEach(eventName => dropArea.addEventListener(eventName, e => preventDefaults(e), false))
+
+  dropArea.addEventListener('input', event => addingFiles(event, 'upload'))
+
+  const preventDefaults = event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const type = event.type
+    if (type === 'dragenter' || type === 'dragover') highlight()
+    if (type === 'dragleave' || type === 'drop') unHighlight()
+    if (type === 'drop') addingFiles(event, 'drop')
+  }
+
+  const highlight = () => dropArea.classList.add('highlight')
+
+  const unHighlight = () => dropArea.classList.remove('highlight')
+
+
+  const addingFiles = (e, type) => {
+    let dt  = new DataTransfer()
+    let newList = type === 'drop' ? ([...listInput.files, ...e.dataTransfer.files]) : ([...listInput.files, ...input.files])
+    newList.forEach(el => dt.items.add(el))
+    let files = dt.files
+    listInput.files = files
+    if (type === 'upload') input.files = new DataTransfer().files
+    previewFile()
+  }
+
+  const previewFile = () => {
+    listDiv.innerHTML = '';
+    ([...listInput.files]).forEach(file => setItem(file));
+  }
+
+  const removeFile = (e, file) => {
+    e.target.parentNode.remove()
+    const dt = new DataTransfer()
+    let newList2 = ([...listInput.files])
+    newList2.forEach(el => el === file)
+    let newList = ([...listInput.files]).filter(el => el !== file)
+    newList.forEach(el=> dt.items.add(el))
+    let files = dt.files
+    listInput.files = files
+    previewFile()
+  }
+
+  const setItem = file => {
+    const item = document.createElement('span')
+    const btnDel = document.createElement('button')
+    btnDel.classList = 'btn-reset btn-closed input-file__del'
+    btnDel.type = 'button'
+    btnDel.addEventListener('click', e => removeFile(e, file))
+    item.classList = 'input input-file__file'
+    item.innerText = file.name
+    item.append(btnDel)
+    listDiv.appendChild(item)
+    return item
+  }
+}
+
+```
