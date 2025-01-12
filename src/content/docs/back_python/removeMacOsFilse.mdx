@@ -1,0 +1,24 @@
+---
+title: Удаление файлов MacOs
+---
+
+```python
+import os
+
+path = os.getcwd()
+
+print('Скрипт удаляет все файлы начинающиеся на "._" или имеющие название ".DS_Store"')
+
+if (input(f'У далить все файлы в данном каталоге и подкаталогах? [{path}] (y/n): ').lower() == 'y'):
+    isDeletedFile = False
+    for dir_path, dir_names, file_names in os.walk(path):
+        for file in file_names: 
+            if (file.startswith('._') or file == '.DS_Store'):
+                isDeletedFile = True
+                print(f'{dir_path}{os.sep}{file}')
+                os.remove(f'{dir_path}{os.sep}{file}') 
+    if (isDeletedFile): print('Удалено успешно!')
+    else: print('Таких файлов не найдено!')    
+else:
+    print('До свидания!')
+```

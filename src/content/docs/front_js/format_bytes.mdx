@@ -2,6 +2,9 @@
 title: Форматирование байт в человекочитаемый вид
 ---
 
+`formatBytes(bytes, decimals)` -
+Передаем размер в байтах и кол-во символов после запятой и получаем строку вида: 0 байт, 1.25 Гб
+
 ```ts
 export function formatBytes(bytes: number, decimals = 2) {
   if (!bytes) return "0 байт";

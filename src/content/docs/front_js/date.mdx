@@ -2,6 +2,14 @@
 title: Работа с датами
 ---
 
+`parsDate(date)` - Получение Date из разных форматов: Date(не меняется), 'YYYY-MM-DD' Unix(10 и 13 символов).
+
+`formateDate(Date, 'DD.MM.YYYY')` - Форматирования даты.
+
+`formateTime(Date, HH:mm:ss')` - Форматирования времени.
+
+`daysInMonth(month, year)` - Получить количество дней в месяце.
+
 ```ts
 type InputDate = Date | string | number | null;
 

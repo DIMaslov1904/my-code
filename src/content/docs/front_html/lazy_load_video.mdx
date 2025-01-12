@@ -1,0 +1,15 @@
+---
+title: Отложенная загрузка видео
+---
+
+import Component from '../../../components/LazyVideo.astro';
+import ComponentCode from '../../../components/LazyVideo.astro?raw';
+import Card from '../../../components/_Card.astro';
+import {Code} from '@astrojs/starlight/components';
+
+
+<Card>
+<Component/>
+</Card>
+
+<Code code={ComponentCode} lang="html" />

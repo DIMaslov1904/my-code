@@ -2,6 +2,16 @@
 title: Запрос файла. Получаем размер файла
 ---
 
+`getFile('https://pro-dachnikov.com/uploads/kakoeto-photo.jpg')` -
+Асинхронная функция. Возвращает объект: 
+```
+{
+  extension: "jpg",
+  name: "kakoeto-photo",
+  size: 248108
+}
+```
+
 ```js
 export async function getFile (href) {
   function getExtension(str) {
