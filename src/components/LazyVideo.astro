@@ -1,20 +1,27 @@
-<div class="video" data-video="https://dzen.ru/video/watch/673dcc06113d8609ad90b14e">
+<div class="video" data-video="https://dzen.ru/embed/vRSo9giXi8EA?from_block=partner&from=zen&mute=0&autoplay=1&tv=0">
   <img class="video__preview" src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_673dcc06113d8609ad90b14e_673dcccbd58b310061bb504d/smart_crop_516x290" alt="" loading="lazy">
-  <button>
-    <svg class="video__play" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <button class="video__play">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.658 9.286c1.44.9 2.16 1.35 2.407 1.926a2 2 0 0 1 0 1.576c-.247.576-.967 1.026-2.407 1.926L9.896 18.94c-1.598.999-2.397 1.498-3.056 1.445a2 2 0 0 1-1.446-.801C5 19.053 5 18.111 5 16.226V7.774c0-1.885 0-2.827.394-3.358a2 2 0 0 1 1.446-.801c.66-.053 1.458.446 3.056 1.445l6.762 4.226Z"/>
     </svg>
   </button>
 
 </div>
 
-<style>
+<style is:global>
   .video {
     position: relative;
-    width: 300px;
-    height: 200px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
     border-radius: 12px;
     overflow: hidden;
+  }
+
+  .video__element {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
   }
 
   .video__preview {
@@ -28,9 +35,23 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background-color: white;
+    color: rgb(70, 70, 255);
+    border-radius: 50%;
+    border: none;
     width: 80px;
     height: 80px;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .video__play:hover {
+    background-color: rgb(70, 70, 255);
+    color: white;
   }
 
 </style>
@@ -50,12 +71,14 @@
       if (is_file) {
         const video = document.createElement('video')
         video.src = url_video
+        video.classList.add('video__element')
         video.controls = true
         video.autoplay = true
         container.append(video)
       } else {
         const iframe = document.createElement('iframe')
         iframe.src = `${url_video}?autoplay=1`
+        iframe.classList.add('video__element')
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         iframe.allowFullscreen = true
         container.append(iframe)
