@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parallax</title>
+
+    <style>
+      *,
+      *:after,
+      *:before {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons",
+          "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
+        overflow-x: hidden;
+        background: hsl(0 0% 2%);
+      }
+
+      body::before {
+        --line: hsl(0 0% 95% / 0.25);
+        content: "";
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        background: linear-gradient(
+              90deg,
+              var(--line) 1px,
+              transparent 1px 10vmin
+            )
+            0 -5vmin / 10vmin 10vmin,
+          linear-gradient(var(--line) 1px, transparent 1px 10vmin) 0 -5vmin / 10vmin
+            10vmin;
+        mask: linear-gradient(-15deg, transparent 30%, white);
+        top: 0;
+        z-index: -1;
+      }
+
+      main {
+        width: 1200px;
+        margin: 0 auto;
+        max-width: 100%;
+        padding: 0 1rem;
+      }
+
+      h1 {
+        display: grid;
+        place-items: center;
+      }
+
+      h1 span,
+      h2 {
+        background: linear-gradient(hsl(0 0% 98%) 30%, hsl(0 0% 30%));
+        color: transparent;
+        background-clip: text;
+      }
+
+      h1 span:first-of-type {
+        font-size: 1rem;
+        text-transform: uppercase;
+      }
+      h1 span:last-of-type {
+        font-size: clamp(3rem, 6vw + 1rem, 12rem);
+      }
+
+      section {
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        max-width: 100%;
+      }
+
+      figure {
+        border-radius: 1rem;
+        margin: 0;
+        overflow: hidden;
+        inset: 0;
+        position: absolute;
+        width: 100%;
+      }
+
+      figure:last-of-type {
+        --b: 2;
+        overflow: visible;
+        clip-path: inset(-200% 0 0 0);
+      }
+
+      .pop-out-image {
+        view-timeline-name: --popper;
+        aspect-ratio: 1;
+        position: relative;
+        width: clamp(100px, 45vmin, 300px);
+      }
+
+      figure img {
+        aspect-ratio: 1;
+        animation: slide-up linear both;
+        animation-timeline: --popper;
+        animation-range: entry 100% cover 50%;
+        left: 50%;
+        object-fit: cover;
+        position: absolute;
+        translate: var(--x1, -50%) var(--y1, 0);
+        top: 0%;
+        width: var(--size, 100%);
+      }
+
+      h2 {
+        font-size: clamp(3rem, 6vw + 1rem, 12rem);
+      }
+
+      .skateboarder {
+        --size: 170%;
+        --y2: -40%;
+      }
+
+      .snowboarder {
+        --size: 155%;
+        --x1: -65%;
+        --y2: -35%;
+      }
+
+      .snowboarder img {
+        object-position: right;
+      }
+
+      .mtb {
+        --size: 185%;
+        --y2: -45%;
+      }
+
+      .mtb img {
+        object-position: right;
+      }
+
+      .mtx {
+        --size: 170%;
+        --x1: -52%;
+        --y2: -40%;
+        --y1: -10%;
+      }
+
+      .mtx img {
+        object-position: right;
+      }
+
+      @keyframes slide-up {
+        to {
+          translate: var(--x1, -50%) var(--y2, -50%);
+          filter: brightness(var(--b, 1));
+        }
+      }
+
+      section,
+      section * {
+        transform-style: preserve-3d;
+      }
+
+      section {
+        perspective: 100vh;
+      }
+
+      .pop-out-image,
+      figure {
+        transition: transform 0.2s;
+      }
+
+      [data-exploded] .pop-out-image {
+        transform: rotateX(-14deg) rotateY(55deg);
+      }
+      .pop-out-image {
+        outline: 4px dashed transparent;
+        transition: outline 0.2s;
+        border-radius: 1rem;
+      }
+      [data-exploded] .pop-out-image {
+        outline-color: hsl(0 0% 100% / 0.75);
+      }
+
+      [data-exploded] .pop-out-image figure:last-of-type {
+        transform: translate3d(0, 0, 100px);
+      }
+      [data-exploded] .pop-out-image figure:first-of-type {
+        transform: translate3d(0, 0, -100px);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1><span>Take your styles to the</span><span>Extreme</span></h1>
+      </section>
+      <section>
+        <div class="pop-out-image skateboarder">
+          <figure>
+            <img
+              src="https://assets.codepen.io/605876/skateboarder.jpeg"
+              alt="skateboarder doing a trick mid air"
+            />
+          </figure>
+          <figure aria-hidden="true">
+            <img
+              src="https://assets.codepen.io/605876/skateboarder-bg-removed.png"
+            />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <div class="pop-out-image snowboarder">
+          <figure>
+            <img
+              src="https://assets.codepen.io/605876/snowboarder.jpeg"
+              alt="skateboarder doing a trick mid air"
+            />
+          </figure>
+          <figure aria-hidden="true">
+            <img
+              src="https://assets.codepen.io/605876/snowboarder-bg-removed.png"
+            />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <div class="pop-out-image mtb">
+          <figure>
+            <img
+              src="https://assets.codepen.io/605876/mtb.jpeg"
+              alt="skateboarder doing a trick mid air"
+            />
+          </figure>
+          <figure aria-hidden="true">
+            <img src="https://assets.codepen.io/605876/mtb-bg-removed.png" />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <div class="pop-out-image mtx">
+          <figure>
+            <img
+              src="https://assets.codepen.io/605876/mtx.jpeg"
+              alt="skateboarder doing a trick mid air"
+            />
+          </figure>
+          <figure aria-hidden="true">
+            <img src="https://assets.codepen.io/605876/mtx-bg-removed.png" />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>fin.</h2>
+      </section>
+    </main>
+  </body>
+</html>

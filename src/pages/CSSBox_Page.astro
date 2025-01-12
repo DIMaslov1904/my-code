@@ -1,0 +1,121 @@
+---
+const list = ['https://i.imgur.com/CXweVSn.png', 'https://i.imgur.com/qkViT3A.jpeg', 'https://i.imgur.com/1zr4R1q.jpeg']
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSSBox Example Page</title>
+
+    <style>
+      .img-box {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 34px;
+      }
+
+      .img-box__open {
+        cursor: zoom-in;
+      }
+
+      .img-box__preview {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .img-box__detail {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .img-box__full {
+        position: fixed;
+        z-index: 999;
+        inset: 0;
+        background-color: rgba(0 0 0 / .8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+      }
+
+      .img-box__full:not(:target) {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }  
+
+      .img-box__close,
+      .img-box__prev,
+      .img-box__next {
+        position: absolute;
+        text-decoration: none;
+        color: white;
+        font-size: 36px;
+      }
+
+      .img-box__close {
+        inset: 0;
+        cursor: zoom-out;
+      }
+
+      .img-box__close::after {
+        position: absolute;
+        content: "\00d7";
+        top: 1%;
+        right: 1%;
+        cursor: pointer;
+      }
+      
+      .img-box__prev,
+      .img-box__next {
+        top: 50%;
+        transform: translate(0%, -50%);
+        border-radius: 2px;
+        width: 1em;
+        height: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .2s;
+      }
+
+      .img-box__prev {
+        left: 5%;
+      }
+
+      .img-box__next {
+        right: 5%;
+      }
+
+      .img-box__prev:hover,
+      .img-box__next:hover {
+        background-color: #fff;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="img-box">
+      {list.map((item, index) => (
+        <a href={'#img'+index} class="img-box__open">
+          <img class="img-box__preview" src={item} alt="изображение" loading="lazy" />
+        </a>
+
+        <div id={'img'+index} class="img-box__full">
+          <img class="img-box__detail" src={item} alt="изображение" loading="lazy" />
+          <a class="img-box__close" href="#void"></a>
+          {index-1 >= 0 ? <a class="img-box__prev" href={'#img'+(index-1)}>&lt;</a> : ''}
+          {index+1 < list.length ? <a class="img-box__next" href={'#img'+(index+1)}>&gt;</a> : ''}
+        </div>
+        ))
+      }
+    </div>
+  </body>
+</html>
