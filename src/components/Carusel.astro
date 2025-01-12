@@ -1,0 +1,39 @@
+---
+const list = ['https://i.imgur.com/CXweVSn.png', 'https://i.imgur.com/CXweVSn.png', 'https://i.imgur.com/CXweVSn.png']
+---
+
+<ul class="carusel">
+  {list.map((item) => (
+    <li>
+      <a href="#">
+        <figure>
+          <picture>
+            <img src={item} alt="изображение" loading="lazy" />
+          </picture>
+          <figcaption>Описание фото</figcaption>
+        </figure>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+.carusel {
+  --gap: 1rem;
+
+  display: grid;
+  grid-auto-flow: column;
+  gap: calc(var(--gap) / 2);
+  list-style: none;
+  padding: 0;
+
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gap);
+}
+
+.carusel figure {
+  scroll-snap-align: start;
+}
+</style>
