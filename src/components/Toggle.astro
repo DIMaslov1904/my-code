@@ -2,17 +2,20 @@
 
 <style>
   .toggle {
-    font-size: 40px;
+    --size: 2.5rem;
+    position: relative;
     appearance: none;
-    width: 2.12em;
-    height: 1em;
+    width: calc(var(--size) * 2.12);
+    height: var(--size);
     background-color: grey;
-    border-radius: 0.5em;
+    border-radius: calc(var(--size) * 0.5);
     display: flex;
     align-items: center;
-    padding: 0.12em;
+    padding: calc(var(--size) * 0.12);
     transition: background-color 0.3s ease;
     border: none;
+    font-weight: 600;
+    font-size: calc(var(--size) / 2.5);
   }
   .toggle:not(:disabled) {
     cursor: pointer;
@@ -20,8 +23,8 @@
   .toggle::after {
     content: "";
     display: block;
-    width: 0.87em;
-    height: 0.87em;
+    width: calc(var(--size) * 0.87);
+    height: calc(var(--size) * 0.87);
     background-color: white;
     border-radius: 50%;
     transition: transform 0.3s ease;
@@ -30,6 +33,17 @@
     background-color: #1cc668;
   }
   .toggle:checked::after {
-    transform: translateX(1em);
+    transform: translateX(var(--size));
+  }
+  .toggle::before {
+    content: "on";
+    position: absolute;
+    display: block;
+    left: 1em;
+  }
+  .toggle:not(:checked)::before {
+    content: "off";
+    left: auto;
+    right: 1em;
   }
 </style>
