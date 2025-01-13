@@ -3,15 +3,15 @@
 <style>
   .loader {
     --color: 255 255 255; /* цвет (rgb) */
-    font-size: 5rem; /* размер */
-    width: 1em;
+    --size: 5rem; /* размер */
+    width: var(--size);
     position: relative;
     display: inline-block;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1;
   }
   .loader::before,
   .loader::after {
-    --fill-box-shadow: 0 0 0 0.12em rgb(var(--color));
+    --fill-box-shadow: 0 0 0 calc(var(--size) * 0.12) rgb(var(--color));
     --box-shadow: 0 0 0 0 rgb(var(--color));
     content: "";
     position: absolute;
@@ -20,15 +20,15 @@
     animation-duration: 1.8s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    filter: drop-shadow(0 0 0.08em rgba(var(--color) / 0.75));
+    filter: drop-shadow(0 0 calc(var(--size) * 0.08) rgba(var(--color) / .75));
   }
   .loader::before {
-    width: 1em;
+    width: var(--size);
     box-shadow: inset var(--fill-box-shadow);
     animation-name: pulsA;
   }
   .loader::after {
-    width: 0.76em;
+    width: calc(var(--size) * 0.75);
     inset: 0;
     margin: auto;
     box-shadow: var(--box-shadow);
