@@ -13,7 +13,7 @@
       const matrix = "+7 (___) ___ ____",
         def = matrix.replace(/\D/g, "");
       let val = this.value.replace(/\D/g, "");
-      if (event.inputType === "insertFromPaste") val = "7" + val.slice(-10);
+      val = "7" + val.slice(-10);
       let i = 0,
         new_value = matrix.replace(/[_\d]/g, function (a) {
           return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
