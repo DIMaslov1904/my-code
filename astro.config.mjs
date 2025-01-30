@@ -13,17 +13,19 @@ export default defineConfig({
 				baseUrl: 'https://github.com/DIMaslov1904/my-code/blob/main/',
 			},
 			locales: {
-        root: {
-          label: 'Русский',
-          lang: 'ru',
-        },
+				root: {
+					label: 'Русский',
+					lang: 'ru',
+				},
 			},
 			sidebar: [
-				{label: 'HTML', 	autogenerate:  { directory: 'front_html'}},
-				{label: 'CSS', 		autogenerate:  { directory: 'front_css'}},
-				{label: 'JS', 		autogenerate:  { directory: 'front_js'}},
-				{label: 'Python', autogenerate:  { directory: 'back_python'}},
-				{label: 'PHP', 		autogenerate:  { directory: 'back_php'}},
+				{ label: 'HTML', autogenerate: { directory: 'front_html' } },
+				{ label: 'CSS', autogenerate: { directory: 'front_css' } },
+				{ label: 'JS', autogenerate: { directory: 'front_js' } },
+				{ label: 'Python', autogenerate: { directory: 'back_python' } },
+				{ label: 'PHP', autogenerate: { directory: 'back_php' } },
+				{ label: 'Exel', autogenerate: { directory: 'pc_exel' } },
+
 			],
 		}),
 	],

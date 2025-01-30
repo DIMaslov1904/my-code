@@ -1,0 +1,37 @@
+---
+title: Разделить на отдельные файлы
+---
+
+Если файл сохранён на диске, можно так:
+
+1. Открываете книгу с данными на нужном листе
+2. Заходите в VBA (Alt+F11)
+3. Выбираете в меню Insert -> Module
+4. Вставляете нижеприведённый код
+5. Нажимаете F5 (не сохраняете исходный файл)
+
+```vb
+Option Explicit ' Обязательное объявление переменных
+Option Base 1 ' Нижняя граница массива (по умолчанию)
+'123456789012345678901234567890123456h8nor@ya567890123456789012345678toster56789
+
+Sub Border_Limit()
+Dim Limit As Integer, Count As Integer, SaveDir As String, SetTitle As Boolean
+
+Count = 1: Limit = 1000 ' Счётчик файлов; Количество строк
+SetTitle = False ' Если есть заголовок, заменить False на True
+
+SaveDir = ThisWorkbook.Path ' Или вписать полный путь для сохранения "C:\"
+' Предполагается, что в колонке A нет пустых ячеек
+While Not IsEmpty(Cells(IIf(SetTitle, 2, 1), 1))
+Rows("1:" & Limit).Copy
+Workbooks.Add xlWBATWorksheet ' Создать новую книгу: шаблон с 1 листом
+ActiveSheet.Paste: Cells(1, 1).Select
+ActiveWorkbook.SaveAs Filename:=SaveDir & "\Массив_" & Count & ".xlsx", _
+FileFormat:=xlOpenXMLWorkbook
+ActiveWindow.Close
+Rows(IIf(SetTitle, 2, 1) & ":" & Limit).Delete Shift:=xlUp
+Count = Count + 1
+Wend: MsgBox "Файл разбит на " & Count - 1 & " файл(ов). "
+End Sub
+```
