@@ -52,6 +52,11 @@
       padding: 2rem;
       border-radius: 1rem;
     }
+
+    .isCopy:not(.active) {
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
   </style>
 </head>
 <body>
@@ -64,7 +69,10 @@
     <input type="text" id="page" name="page">
 
     <button>Сгененрировать</button>
+    <button id="copy" type="button">Скопировать</button>
   </form>
+
+  <span class="isCopy">Скопировано</span>
 
   <pre id="result"></pre>
 
@@ -73,6 +81,15 @@
     const site = document.getElementById('site');
     const page = document.getElementById('page');
     const result = document.getElementById('result');
+    const isCopy = document.querySelector('.isCopy');
+
+    function copy() {
+      navigator.clipboard.writeText(result.innerText)
+      .then(() => {
+        isCopy.classList.add('active');
+        setTimeout(() => isCopy.classList.remove('active'), 5000);
+      })
+    }
 
     function generate(e) {
       e.preventDefault();
@@ -89,8 +106,11 @@ http://${site.value}/${page.value}
 http://www.${site.value}/${page.value}
 https://www.${site.value}/${page.value}
 https://${site.value}/${page.value}`
+copy();
     }
     generator.addEventListener('submit', generate)
+
+    document.getElementById('copy').addEventListener('click', copy)
   </script>
 </body>
 </html>
