@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор адресо</title>
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    form {
+      max-width: 20rem;
+      width: 100%;
+      display: grid;
+      gap: 1rem;
+      padding: 2rem;
+      background-color: rgb(45, 38, 38);
+      color: #fff;
+      border-radius: 1rem;
+    }
+
+    input {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      outline: none;
+      background-color: rgb(255, 255, 255);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: rgb(211, 211, 211);
+    }
+
+    #result {
+      max-width: 20rem;
+      width: 100%;
+      background-color: rgb(45, 38, 38);
+      color: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <form name="generator">
+    <label for="site">Главная</label>
+    <input type="text" id="site" name="site">
+
+    <label for="page">Внутренняя страница</label>
+    <input type="text" id="page" name="page">
+
+    <button>Сгененрировать</button>
+  </form>
+
+  <pre id="result"></pre>
+
+  <script>
+    const form = document.forms.generator;
+    const site = document.getElementById('site');
+    const page = document.getElementById('page');
+    const result = document.getElementById('result');
+
+    function generate(e) {
+      e.preventDefault();
+      result.innerText = `${site.value}
+www.${site.value}
+http://${site.value}
+http://www.${site.value}
+https://www.${site.value}
+https://${site.value}
+
+${site.value}/${page.value}
+www.${site.value}/${page.value}
+http://${site.value}/${page.value}
+http://www.${site.value}/${page.value}
+https://www.${site.value}/${page.value}
+https://${site.value}/${page.value}`
+    }
+    generator.addEventListener('submit', generate)
+  </script>
+</body>
+</html>
