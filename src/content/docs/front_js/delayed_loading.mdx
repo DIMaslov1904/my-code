@@ -11,7 +11,7 @@ function delayedLoading(fn, name) {
   let connectedScript = false, timerId;
   function loadFallback(e) {timerId = setTimeout(() => connectScript(e), 5000)}
   function connectScript(e) {
-    console.log(`Скрипт %c${name}`, "color: #26bfa5;", "запустился по эвенту:", e);
+    if (name) console.log(`Скрипт %c${name}`, "color: #26bfa5;", "запустился по эвенту:", e);
     if (connectedScript) return;
     fn();
     connectedScript = true;
