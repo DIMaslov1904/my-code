@@ -16,7 +16,8 @@ function delayedLoading(fn, name) {
     fn();
     connectedScript = true;
     clearTimeout(timerId);
-    ["scroll", "touchstart", "load"].forEach(function(e){window.removeEventListener(e,connectScript)});
+    window.removeEventListener("load",loadFallback);
+    ["scroll", "touchstart"].forEach(function(e){window.removeEventListener(e,connectScript)});
     ["mouseenter", "click"].forEach(function(e){document.removeEventListener(e,connectScript)});
   }
   window.addEventListener('load', loadFallback);
