@@ -6,23 +6,12 @@ title: Отложенная загрузка скриптов
 секунд полсе загрузки страницы
 
 ```js {6}
-function delayedLoading(fn, name) {
-  "use strict";
-  let connectedScript = false, timerId;
-  function loadFallback(e) {timerId = setTimeout(() => connectScript(e), 5000)}
-  function connectScript(e) {
-    if (name) console.debug(`Скрипт %c${name}`, "color: #26bfa5;", "запустился по эвенту:", e);
-    if (connectedScript) return;
-    fn();
-    connectedScript = true;
-    clearTimeout(timerId);
-    window.removeEventListener("load",loadFallback);
-    ["scroll", "touchstart"].forEach(function(e){window.removeEventListener(e,connectScript)});
-    ["mouseenter", "click"].forEach(function(e){document.removeEventListener(e,connectScript)});
-  }
-  window.addEventListener('load', loadFallback);
-  window.addEventListener('touchstart',connectScript);
-  ["mouseenter", "click"].forEach(function(e){document.addEventListener(e,connectScript)});
-  window.addEventListener("scroll", connectScript, { passive: true });
+function delayedLoading(fn, n) {
+	"use strict";const ctr=new AbortController();const signal=ctr.signal,once=true;let c=false,tId;
+	function loadFallback(e){tId = setTimeout(()=>connectScript(e),5000)}
+	function connectScript(e){if(c)return;c=true;clearTimeout(tId);ctr.abort();fn();if(n)console.debug(`Скрипт %c${n}`,"color:#26bfa5;","запустился по эвенту:",e)}
+	window.addEventListener('load',loadFallback,{signal,once});
+	["mouseenter","click"].forEach(function(e){document.addEventListener(e,connectScript,{signal,once})});
+	["scroll","touchstart"].forEach(function(e){window.addEventListener(e,connectScript,{passive:true,signal,once})});
 }
 ```
