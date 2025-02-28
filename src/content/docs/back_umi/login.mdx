@@ -1,0 +1,47 @@
+---
+title: Авторизация под администратором
+---
+
+```php
+<?php
+include "./standalone.php";
+session_start();
+$objects = umiObjectsCollection::getInstance();
+$connection = ConnectionPool::getInstance()->getConnection();
+
+\UmiCms\Service::Auth()->logout();
+
+$sql = "SELECT id FROM cms3_objects WHERE guid = 'system-supervisor'";
+$result = $connection->queryResult($sql);
+$result->setFetchType(IQueryResult::FETCH_ASSOC);
+$fetchResult = $result->fetch();
+
+$userId = (int) $fetchResult['id'];
+
+$object = $objects->getObject($userId);
+$login = $object->getValue("login");
+$password = $object->getValue("password");
+
+$auth = \UmiCms\Service::Auth();
+
+$ReflectedClass = new ReflectionClass($auth);
+$getAuthorization = $ReflectedClass->getMethod('getAuthorization');
+$getAuthorization->setAccessible(true);
+
+$authorization = $getAuthorization->invoke($auth);
+
+$ReflectedClassAthorization = new ReflectionClass($authorization);
+
+$authorization->deAuthorize();
+
+$startSession = $ReflectedClassAthorization->getMethod('startSession');
+$startSession->setAccessible(true);
+
+$authorization->authorizeStateless($userId);
+
+$startSession->invoke($authorization, $userId, false);
+
+
+echo "<p><a href='/admin/'>Перейти в админку</a></p>";
+?>
+```
