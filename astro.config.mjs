@@ -25,6 +25,7 @@ export default defineConfig({
 				{ label: 'Python', autogenerate: { directory: 'back_python' } },
 				{ label: 'PHP', autogenerate: { directory: 'back_php' } },
 				{ label: 'Bitrix', autogenerate: { directory: 'back_bitrix' } },
+				{ label: 'UMI', autogenerate: { directory: 'back_umi' } },
 				{ label: 'Exel', autogenerate: { directory: 'pc_exel' } },
 
 			],
