@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор адресо</title>
+
+  <style is:global>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    form {
+      max-width: 50rem;
+      width: 100%;
+      display: grid;
+      gap: 1rem;
+      padding: 2rem;
+      background-color: rgb(45, 38, 38);
+      color: #fff;
+      border-radius: 1rem;
+    }
+
+    input {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      outline: none;
+    }
+
+    .button {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      outline: none;
+      background-color: rgb(255, 255, 255);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: black;
+    }
+    .button:hover {
+      background-color: rgb(211, 211, 211);
+    }
+
+    #result {
+      max-width: 50rem;
+      width: 100%;
+      background-color: rgb(45, 38, 38);
+      color: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    #result > div {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+    }
+
+    .isCopy:not(.active) {
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <form name="generator">
+    <label for="idTiket">ID тикета</label>
+    <input type="text" id="idTiket" name="idTiket">
+  </form>
+
+  <span class="isCopy">Скопировано</span>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.forms.generator as HTMLFormElement;
+    const idTiket = document.getElementById('idTiket') as HTMLInputElement;
+    const result = document.getElementById('result') as HTMLDivElement;
+    const isCopy = document.querySelector('.isCopy') as HTMLSpanElement;
+
+    function copy(text: string) {
+      navigator.clipboard.writeText(text)
+      .then(() => {
+        isCopy.classList.add('active');
+        setTimeout(() => isCopy.classList.remove('active'), 5000);
+      })
+    }
+
+    const list = [
+      {
+        name: 'Ссылка на тикет',
+        link: 'https://support.5th.ru/published/index.php?app=ST#requests/all/id/{ID}'
+      },
+      {
+        name: 'Ссылка редактирование',
+        link: 'https://support.5th.ru/published/sta/work_log_edit.php?request_id={ID}'
+      }
+    ]
+
+    function createRow(link, name) {
+      const div = document.createElement('div');
+      const a = document.createElement('a');
+      const btn = document.createElement('button');
+      a.href = link;
+      a.target = '_blank';
+      a.innerText = name;
+      a.classList.add('button');
+      div.append(a);
+      btn.innerText = 'Скопировать';
+      btn.type = 'button';
+      btn.classList.add('button');
+      btn.addEventListener('click', () => copy(link));
+      div.append(btn);
+      return div;
+    }
+
+
+    function generate(e) {
+      e.preventDefault();
+      result.innerHTML = '';
+
+      list.forEach(item => {
+        const link = item.link.replace('{ID}', idTiket.value);
+        const div = createRow(link, item.name);
+        result.append(div);
+      })
+    }
+
+    generator.addEventListener('input', generate)
+
+  </script>
+</body>
+</html>
