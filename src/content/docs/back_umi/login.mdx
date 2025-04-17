@@ -40,8 +40,6 @@ $startSession->setAccessible(true);
 $authorization->authorizeStateless($userId);
 
 $startSession->invoke($authorization, $userId, false);
-
-
-echo "<p><a href='/admin/'>Перейти в админку</a></p>";
 ?>
+<script>window.location.href = "/admin"</script>
 ```
