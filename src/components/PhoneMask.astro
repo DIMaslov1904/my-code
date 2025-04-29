@@ -1,48 +1,53 @@
 <input type="text" class="js-phone-mask" />
 
 <script>
-  document.querySelectorAll(".js-phone-mask").forEach(function (input) {
-    let keyCode: number;
-    function mask(
-      this: HTMLInputElement,
-      event: Event & { keyCode?: number; inputType?: string; type: string },
-    ): void {
-      event.keyCode && (keyCode = event.keyCode);
-      const pos = this.selectionStart;
-      if (pos && pos < 3) event.preventDefault();
-      const matrix = "+7 (___) ___ ____",
-        def = matrix.replace(/\D/g, "");
-      let val = this.value.replace(/\D/g, "");
-      if (val.length > 1 && val.slice(0, 1) !== '7') val = "7" + val;
-      if (event.inputType === "insertFromPaste") val = "7" + val.slice(-10);
-      let i = 0,
-        new_value = matrix.replace(/[_\d]/g, function (a) {
-          return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
-        });
-      i = new_value.indexOf("_");
-      if (i !== -1) {
-        i < 5 && (i = 3);
-        new_value = new_value.slice(0, i);
-      }
-      let reg: RegExp | string = matrix
-        .substring(0, this.value.length)
-        .replace(/_+/g, function (a) {
-          return "\\d{1," + a.length + "}";
-        })
-        .replace(/[+()]/g, "\\$&");
-      reg = new RegExp("^" + reg + "$");
-      if (
-        !reg.test(this.value) ||
-        this.value.length < 5 ||
-        (keyCode > 47 && keyCode < 58)
-      )
-        this.value = new_value;
-      if (event.type === "blur" && this.value.length < 5) this.value = "";
-      if (event.type === "focus")
-        setTimeout(() => (this.selectionStart = this.selectionEnd = 10000), 0);
+  document.querySelectorAll("[data-js-phone-mask]").forEach(function (input) {
+  let keyCode;
+  function validate(input){
+    const value = input.value;
+    if (value.length === 0)
+      input.setCustomValidity("Введите номер телефона");
+    else if (value.length < 17)
+      input.setCustomValidity("Введите корректный номер телефона");
+    else input.setCustomValidity("");
+  };
+  function mask(event) {
+    event.keyCode && (keyCode = event.keyCode);
+    const pos = this.selectionStart;
+    if (pos && pos < 3) event.preventDefault();
+    const matrix = "+7 (___) ___ ____",
+      def = matrix.replace(/\D/g, "");
+    let val = this.value.replace(/\D/g, "");
+    if (val.length > 1 && val.slice(0, 1) !== '7') val = "7" + val;
+    if (event.inputType === "insertFromPaste") val = "7" + val.slice(-10);
+    let i = 0,
+      new_value = matrix.replace(/[_\d]/g, function (a) {
+        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+      });
+    i = new_value.indexOf("_");
+    if (i !== -1) {
+      i < 5 && (i = 3);
+      new_value = new_value.slice(0, i);
     }
-    ["input", "focus", "blur", "keydown"].forEach(function (e) {
-      (input as HTMLInputElement).addEventListener(e,mask as EventListener,false,);
-    });
-  });
+    let reg = matrix
+      .substring(0, this.value.length)
+      .replace(/_+/g, function (a) {
+        return "\\d{1," + a.length + "}";
+      })
+      .replace(/[+()]/g, "\\$&");
+    reg = new RegExp("^" + reg + "$");
+    if (
+      !reg.test(this.value) ||
+      this.value.length < 5 ||
+      (keyCode > 47 && keyCode < 58)
+    )
+      this.value = new_value;
+    if (event.type === "blur" && this.value.length < 5) this.value = "";
+    if (event.type === "focus")
+      setTimeout(() => (this.selectionStart = this.selectionEnd = 10000), 0);
+    validate(this)
+  }
+  ["input", "focus", "blur", "keydown"].forEach((e) => input.addEventListener(e, mask, false));
+  validate(input);
+});
 </script>
