@@ -5,9 +5,9 @@ title: Отложенная загрузка скриптов
 Подключение происходит по целевому действию пользователя или через 5
 секунд полсе загрузки страницы
 
-```js {6}
-function delayedLoading(fn, n, t=5000) {
-	"use strict";const ctr=new AbortController();const signal=ctr.signal,once=true;let c=false,tId;
+```js
+function delayedLoading(fn,n,t=5000) {
+	const ctr=new AbortController();const signal=ctr.signal,once=true;let c=false,tId;
 	function loadFallback(e){tId = setTimeout(()=>connectScript(e),t)}
 	function connectScript(e){if(c)return;c=true;clearTimeout(tId);ctr.abort();fn();if(n)console.debug(`Скрипт %c${n}`,"color:#26bfa5;","запустился по эвенту:",e)}
 	window.addEventListener('load',loadFallback,{signal,once});
