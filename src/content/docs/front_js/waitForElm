@@ -1,0 +1,22 @@
+---
+title: Дождаться отображение элемента
+---
+
+
+``` js
+function waitForElm(selector:string): Promise<HTMLElement> {
+  return new Promise<HTMLElement>(resolve => {
+    const element = document.querySelector(selector) as HTMLElement
+    if (element) return resolve(element)
+
+    const observer = new MutationObserver(() => {
+      const element = document.querySelector(selector) as HTMLElement
+      if (!element) return
+      observer.disconnect()
+      resolve(element)
+    })
+
+    observer.observe(document.body, {childList: true, subtree: true})
+  })
+}
+```
