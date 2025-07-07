@@ -1,0 +1,25 @@
+---
+title: Скролл мышью
+---
+
+```js
+const speed = 2
+
+document.querySelectorAll('.scroll-block').forEach(scroll => {
+  let left = 0,
+    coorX = 0,
+    drag = false
+
+  scroll.addEventListener('mousedown', function (e) {
+    drag = true
+    coorX = e.pageX - this.offsetLeft
+  });
+  document.addEventListener('mouseup', function () {
+    drag = false
+    left = scroll.scrollLeft
+  });
+  scroll.addEventListener('mousemove', function (e) {
+    drag ? this.scrollLeft = left - (e.pageX - this.offsetLeft - coorX) * speed : ''
+  });
+})
+```
