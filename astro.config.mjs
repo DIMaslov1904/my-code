@@ -18,17 +18,6 @@ export default defineConfig({
 					lang: 'ru',
 				},
 			},
-			sidebar: [
-				{ label: 'HTML', autogenerate: { directory: 'front_html' } },
-				{ label: 'CSS', autogenerate: { directory: 'front_css' } },
-				{ label: 'JS', autogenerate: { directory: 'front_js' } },
-				{ label: 'Python', autogenerate: { directory: 'back_python' } },
-				{ label: 'PHP', autogenerate: { directory: 'back_php' } },
-				{ label: 'Bitrix', autogenerate: { directory: 'back_bitrix' } },
-				{ label: 'UMI', autogenerate: { directory: 'back_umi' } },
-				{ label: 'Exel', autogenerate: { directory: 'pc_exel' } },
-
-			],
 		}),
 	],
 });
