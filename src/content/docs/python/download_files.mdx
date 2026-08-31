@@ -1,12 +1,11 @@
 ---
-title: "Синхронное скаяивание файлов"
+title: "Синхронное скачивание файлов"
 ---
 
 ```python
 import asyncio
 import httpx
 import tqdm
-
 
 async def download_files(url: str, filename: str):
     with open(filename, 'wb') as f:

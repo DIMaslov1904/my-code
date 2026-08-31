@@ -1,0 +1,22 @@
+---
+title: Создание администратора
+---
+
+```php
+<?php require "{$_SERVER['DOCUMENT_ROOT']}/bitrix/header.php";
+
+$user = new CUser;
+
+$ID = $user->Add([
+    'EMAIL' => 'admin@mail.ru',
+    'LOGIN' => 'admin',
+    'PASSWORD' => '123456',
+    'CONFIRM_PASSWORD' => '123456',
+    'ACTIVE' => 'Y',
+    'GROUP_ID' => [1]
+]);
+
+echo intval($ID) > 0 ? "Администратор создан ID:{$ID}" : $user->LAST_ERROR;
+
+require "{$_SERVER['DOCUMENT_ROOT']}/bitrix/footer.php";
+```
